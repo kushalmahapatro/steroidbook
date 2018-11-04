@@ -1,0 +1,46 @@
+import 'package:http/http.dart';
+import 'package:meta/meta.dart';
+export 'ApiConstants.dart';
+
+Future<String> request_GET({@required Map<String, String> parameters, @required String url}) async {
+  String result;
+  try {
+    if (parameters != null) {
+      List<MapEntry> list = parameters.entries.toList();
+      for(int i=0; i<list.length; i++) {
+        MapEntry<String, String> entry = list[i];
+        if(i==0 && !url.contains("?")) {
+          url = url + "?" +entry.key +"="+ entry.value;
+        }
+        else if(url.endsWith("&")) {
+          url = url + entry.key +"="+ entry.value;
+        }
+        else {
+          url = url + "&" +entry.key +"="+ entry.value;
+        }
+      }
+    }
+    Response response = await get(url);
+    if(response!=null && response.statusCode==200) {
+      result = response.body;
+    }
+  } catch(e) {
+    print(e);
+    result = null;
+  }
+  return result;
+}
+
+Future<String> request_POST_header({@required Map<String, String> parameters, @required String url}) async {
+  String result = null;
+  try {
+    Response response = await post(url, headers: parameters);
+    if(response!=null && response.statusCode==200) {
+      result = response.body;
+    }
+  } catch(e) {
+    print(e);
+    result = null;
+  }
+  return result;
+}
