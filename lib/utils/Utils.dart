@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+export 'PreferenceManager.dart';
 
 void snackBar(String message, BuildContext _scaffoldContext) {
 Scaffold.of(_scaffoldContext)
