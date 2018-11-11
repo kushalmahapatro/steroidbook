@@ -4,7 +4,10 @@ const int primaryColorInt = 0xFF0cb9f3;
 
 const Color primaryColor = const Color(primaryColorInt);
 
-const MaterialColor materialPrimary =  const MaterialColor(primaryColorInt,<int, Color>{
+const Color hintColor = Colors.grey;
+
+const MaterialColor materialPrimary =
+    const MaterialColor(primaryColorInt, <int, Color>{
   50: Color(0xFF86dcf9),
   100: Color(0xFF6dd5f8),
   200: Color(0xFF55cef7),

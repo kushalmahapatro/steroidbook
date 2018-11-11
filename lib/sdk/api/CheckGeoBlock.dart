@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'package:vod/sdk/ApiUtils.dart';
 
-Future<CheckGeoBlockModel> checkGeoBlockApi(Map<String, String> parameters) async {
+Future<CheckGeoBlockModel> checkGeoBlockApi(
+    Map<String, String> parameters) async {
   try {
-    return CheckGeoBlockModel.fromJSON(await request_POST_header(parameters: parameters, url: checkGeoBlockUrl()) );
-  } catch (e) {print(e);}
+    return CheckGeoBlockModel.fromJSON(await request_POST_header(
+        parameters: parameters, url: checkGeoBlockUrl()));
+  } catch (e) {
+    print(e);
+  }
   return null;
 }
 
@@ -14,8 +18,8 @@ class CheckGeoBlockModel {
 
   CheckGeoBlockModel(this.statusCode, this.country);
 
-  CheckGeoBlockModel.fromJSON(String json) :
-        assert(json!=null),
+  CheckGeoBlockModel.fromJSON(String json)
+      : assert(json != null),
         statusCode = (jsonDecode(json) as Map)["code"] as int ?? 0,
         country = (jsonDecode(json) as Map)["country"] as String ?? "";
 }

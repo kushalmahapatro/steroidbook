@@ -14,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     implements SplashScreenListener {
-
   SplashScreenController controller;
 
   _SplashScreenState() {
@@ -39,19 +38,30 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Widget backgroundWidget() {
-    return Positioned.fill(child: Container(
+    return Positioned.fill(
+        child: Container(
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage("assets/images/background.jpg"), fit: BoxFit.cover)
-      ),
+          image: DecorationImage(
+              image: AssetImage("assets/images/background.jpg"),
+              fit: BoxFit.cover)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-        child: Container(decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
+        ),
       ),
     ));
   }
 
   Widget logoWidget() {
-    return Center(child: Image.asset("assets/images/logo.png", width: 120.0, height: 120.0, fit: BoxFit.fill,),);
+    return Center(
+      child: Image.asset(
+        "assets/images/logo.png",
+        width: 120.0,
+        height: 120.0,
+        fit: BoxFit.fill,
+      ),
+    );
   }
 
   @override
@@ -69,7 +79,8 @@ class _SplashScreenState extends State<SplashScreen>
   void routeTo({@required Routes route}) {
     switch (route) {
       case Routes.LOGIN:
-        Navigator.pushReplacement(context, new MaterialPageRoute(builder: (c)=>new Login() ));
+        Navigator.pushReplacement(
+            context, new MaterialPageRoute(builder: (c) => new Login()));
         break;
 
       default:

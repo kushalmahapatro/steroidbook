@@ -31,8 +31,9 @@ Future<String> request_GET({@required Map<String, String> parameters, @required 
   return result;
 }
 
+// ignore: non_constant_identifier_names
 Future<String> request_POST_header({@required Map<String, String> parameters, @required String url}) async {
-  String result = null;
+  String result;
   try {
     Response response = await post(url, headers: parameters);
     if(response!=null && response.statusCode==200) {
