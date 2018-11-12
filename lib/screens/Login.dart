@@ -6,7 +6,8 @@ import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/clippers/TopCircleClipper.dart';
 import 'package:vod/utils/Constants.dart';
 import 'package:vod/utils/MyBehaviour.dart';
-import 'package:vod/utils/TextFields.dart';
+import 'package:vod/widgets/Buttons.dart';
+import 'package:vod/widgets/TextFields.dart';
 import 'package:vod/utils/Utils.dart';
 
 class Login extends StatefulWidget {
@@ -20,7 +21,6 @@ class _LoginState extends State<Login> implements LoginListener {
   BuildContext _scaffoldContext;
   final emailController = new TextEditingController();
   final passwordController = new TextEditingController();
-
 
   _LoginState() {
     controller = LoginController(listener: this);
@@ -49,36 +49,51 @@ class _LoginState extends State<Login> implements LoginListener {
       ],
     );
 
-    Widget loginButton = new Padding(
-        padding: new EdgeInsets.symmetric(vertical: 16.0),
-        child: new FlatButton(
-          color: primaryColor,
-          padding: EdgeInsets.only(top: 14.0, bottom: 14.0),
-          child: new Text(
-            'Login',
-            style: new TextStyle(color: Colors.white),
-          ),
-          onPressed: () {
-            if (emailController.text.isEmpty) {
-              Utils.snackBar("Please enter Email Address", _scaffoldContext);
-            } else if (passwordController.text.isEmpty) {
-              Utils.snackBar("Please enter the password", _scaffoldContext);
-            } else {
-              if (Utils.isValidMail(emailController.text)) {
-                if (passwordController.text.length >= 6) {
-                  // Loigin API to be called over here
-                  Utils.snackBar("Login Api Call", _scaffoldContext);
-                } else {
-                  Utils.snackBar("The password should be minimum 6 digits",
-                      _scaffoldContext);
-                }
-              } else {
-                Utils.snackBar(
-                    "Please enter valid email address", _scaffoldContext);
-              }
-            }
-          },
-        ));
+    validator(){
+      if (emailController.text.isEmpty) {
+        Utils.snackBar("Please enter Email Address", _scaffoldContext);
+      } else if (passwordController.text.isEmpty) {
+        Utils.snackBar("Please enter the password", _scaffoldContext);
+      } else {
+        if (Utils.isValidMail(emailController.text)) {
+          if (passwordController.text.length >= 6) {
+            // Loigin API to be called over here
+            Utils.snackBar("Login Api Call", _scaffoldContext);
+          } else {
+            Utils.snackBar("The password should be minimum 6 digits",
+                _scaffoldContext);
+          }
+        } else {
+          Utils.snackBar(
+              "Please enter valid email address", _scaffoldContext);
+        }
+      }
+    }
+
+    Widget loginButton = VodButton(
+        buttonColor: primaryColor,
+        label: "Login",
+        onClicked: () {
+         validator();
+        });
+
+    Widget facebookButton = VodButton(
+        buttonColor: Color.fromARGB(255, 59, 89, 152),
+        label: "Login with Facebook",
+        imageAsset: "assets/images/facebook.png" ,
+        onClicked: () {
+          validator();
+        });
+
+    Widget googleButton = VodButton(
+        buttonColor: Color.fromARGB(255, 221, 75, 57),
+        label: "Login with Google",
+        imageAsset: "assets/images/google.png" ,
+        onClicked: () {
+          validator();
+        });
+
+
 
     Widget signupView = new Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +117,6 @@ class _LoginState extends State<Login> implements LoginListener {
                     style: new TextStyle(color: primaryColor)))),
       ],
     );
-
 
     Widget body = Container(
       decoration: getBlurredImage(),
@@ -139,13 +153,43 @@ class _LoginState extends State<Login> implements LoginListener {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
-                                  new VodTextField(activeColor: primaryColor, inActiveColor: hintColor,label: "Email", hintText: "Enter your email",
-                                      inputType: TextInputType.emailAddress, editingController: emailController,),
-                                  new VodTextField(activeColor: primaryColor, inActiveColor: hintColor,label: "Password", hintText: "Enter your password",
-                                    obscureText: true, suffixIcon: Icon(Icons.visibility), obscureToggle: true, obscureIcon: Icon(Icons.visibility_off), editingController: passwordController,),
-                                  forgotPassword,
-                                  loginButton,
-                                  signupView
+                                  new VodTextField(
+                                    activeColor: primaryColor,
+                                    inActiveColor: hintColor,
+                                    label: "Email",
+                                    hintText: "Enter your email",
+                                    inputType: TextInputType.emailAddress,
+                                    editingController: emailController,
+                                  ),
+                                  new VodTextField(
+                                    activeColor: primaryColor,
+                                    inActiveColor: hintColor,
+                                    label: "Password",
+                                    hintText: "Enter your password",
+                                    obscureText: true,
+                                    suffixIcon: Icon(Icons.visibility),
+                                    obscureToggle: true,
+                                    obscureIcon: Icon(Icons.visibility_off),
+                                    editingController: passwordController,
+                                  ),
+
+                                  //Forgot password text
+                                  Padding(padding: EdgeInsets.only(top: 16.0, bottom: 8.0), child: forgotPassword),
+
+                                  // Login Button
+                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: loginButton),
+
+                                  // New User Signup Text
+                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: signupView),
+
+                                  // Facebook Button
+                                  FACEBOOK_LOGIN == 1 ?
+                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: facebookButton) : Container(),
+
+                                  // Google Button
+                                  GOOGLE_LOGIN == 1 ?
+                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: googleButton) : Container(),
+
                                 ],
                               ),
                             ),
@@ -158,10 +202,11 @@ class _LoginState extends State<Login> implements LoginListener {
                             child: Container(
                               width: 108.0,
                               height: 108.0,
-                              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.black, backgroundBlendMode: BlendMode.overlay),
                               child: Center(
                                 child: Image.asset("assets/images/logo.png",
-                                    width: 70.0, height: 70.0),
+                                    width: 90.0, height: 90.0),
                               ),
                             ),
                           ),
@@ -194,12 +239,9 @@ class _LoginState extends State<Login> implements LoginListener {
     }
   }
 
+  @override
+  void onFailure() {}
 
   @override
-  void onFailure() {
-  }
-
-  @override
-  void onLoginSuccess() {
-  }
+  void onLoginSuccess() {}
 }

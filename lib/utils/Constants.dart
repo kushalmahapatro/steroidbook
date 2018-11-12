@@ -8,3 +8,9 @@ const bool IMAGE_BACKGROUND = true;
 
 // any positive number to define intensity of blur
 const double BLUR_SIGMA = 5.0;
+
+// 1 to enable facebook login and 0 to disable
+const int FACEBOOK_LOGIN = 1;
+
+// 1 to enable Google login and 0 to disable
+const int GOOGLE_LOGIN = 1;

@@ -4,7 +4,6 @@ import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/utils/Utils.dart';
 
 class VodTextField extends StatefulWidget {
-
   final TextEditingController editingController;
   final Color activeColor;
   final Color inActiveColor;
@@ -16,8 +15,6 @@ class VodTextField extends StatefulWidget {
   final Icon suffixIcon;
   final Icon obscureIcon;
   final bool obscureToggle;
-
-
 
   VodTextField({
     this.editingController,
@@ -32,6 +29,7 @@ class VodTextField extends StatefulWidget {
     this.obscureIcon,
     this.obscureToggle,
   });
+
   @override
   _VodTextFieldState createState() => _VodTextFieldState();
 }
@@ -41,29 +39,30 @@ class _VodTextFieldState extends State<VodTextField> {
   TextEditingController _editingController;
   Widget _suffixIcon;
   Color _labelColor;
-  bool _obscureText ;
+  bool _obscureText;
 
   @override
   void initState() {
     _editingController ??= widget.editingController ?? TextEditingController();
     _labelColor ??= widget.inActiveColor;
-    if(widget.suffixIcon==null) _suffixIcon = Icon(Icons.atm,color: Colors.transparent,);
-    else _suffixIcon = widget.suffixIcon;
-    if (widget.obscureText == null) _obscureText = false;
-    else _obscureText = widget.obscureText;
+    _suffixIcon = widget.suffixIcon;
+    if (widget.obscureText == null)
+      _obscureText = false;
+    else
+      _obscureText = widget.obscureText;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _focusNode.addListener((){
-      if(_focusNode.hasFocus)
-        setState(()=> _labelColor = widget.activeColor);
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus)
+        setState(() => _labelColor = widget.activeColor);
       else
-        setState(()=> _labelColor = widget.inActiveColor);
+        setState(() => _labelColor = widget.inActiveColor);
     });
-    iconPressed(){
-      if(_suffixIcon != null ) {
+    iconPressed() {
+      if (_suffixIcon != null) {
         if (_obscureText) {
           this.setState(() {
             _obscureText = false;
@@ -78,8 +77,8 @@ class _VodTextFieldState extends State<VodTextField> {
       }
     }
 
-
-    if(widget.focusListener!=null) _focusNode.addListener(widget.focusListener);
+    if (widget.focusListener != null)
+      _focusNode.addListener(widget.focusListener);
 
     return TextField(
       controller: _editingController,
@@ -88,13 +87,21 @@ class _VodTextFieldState extends State<VodTextField> {
       autofocus: false,
       obscureText: _obscureText,
       decoration: InputDecoration(
-        hintText: widget.hintText,
-        hintStyle: TextStyle(color: widget.inActiveColor),
-        labelText: widget.label,
-        labelStyle: TextStyle(color: _labelColor),
-        suffixIcon: new Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-        child: IconButton(icon: _suffixIcon, onPressed: widget.obscureToggle == null ? null : iconPressed,))
-      ),
+          hintText: widget.hintText,
+          hintStyle: TextStyle(color: widget.inActiveColor),
+          labelText: widget.label,
+          labelStyle: TextStyle(color: _labelColor),
+          suffixIcon: _suffixIcon != null
+              ? Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                  child: IconButton(
+                    icon: _suffixIcon,
+                    onPressed:
+                        widget.obscureToggle == null ? null : iconPressed,
+                  ))
+              : Padding(
+                  padding: EdgeInsets.all(0.0),
+                )),
     );
   }
 }
