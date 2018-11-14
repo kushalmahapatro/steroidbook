@@ -1,5 +1,6 @@
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+export 'dart:convert';
 export 'ApiConstants.dart';
 
 Future<String> request_GET({@required Map<String, String> parameters, @required String url}) async {
@@ -23,6 +24,7 @@ Future<String> request_GET({@required Map<String, String> parameters, @required 
     Response response = await get(url);
     if(response!=null && response.statusCode==200) {
       result = response.body;
+      print(url+"::\n"+result);
     }
   } catch(e) {
     print(e);
@@ -38,6 +40,7 @@ Future<String> request_POST_header({@required Map<String, String> parameters, @r
     Response response = await post(url, headers: parameters);
     if(response!=null && response.statusCode==200) {
       result = response.body;
+      print(url+"::\n"+result);
     }
   } catch(e) {
     print(e);
