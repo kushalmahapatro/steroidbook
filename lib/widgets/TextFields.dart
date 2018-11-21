@@ -88,7 +88,7 @@ class _VodTextFieldState extends State<VodTextField> {
       obscureText: _obscureText,
       decoration:  _suffixIcon != null ?
       textFieldWithIcon(iconPressed) :
-      textFieldWithourIcon()
+      textFieldWithoutIcon()
     );
   }
   InputDecoration textFieldWithIcon(Function iconPressed){
@@ -106,7 +106,7 @@ class _VodTextFieldState extends State<VodTextField> {
                   )));
     }
 
-    InputDecoration textFieldWithourIcon(){
+    InputDecoration textFieldWithoutIcon(){
         return InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(color: widget.inActiveColor),
