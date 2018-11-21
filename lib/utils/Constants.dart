@@ -14,3 +14,6 @@ const int FACEBOOK_LOGIN = 1;
 
 // 1 to enable Google login and 0 to disable
 const int GOOGLE_LOGIN = 1;
+
+// 1 to enable Phone number in Registration and 0 to disable
+const int PHONE_NUMBER_REGISTERATION = 1;

@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:vod/controllers/LoginControllers.dart';
-import 'package:vod/screens/Register.dart';
+import 'package:vod/controllers/RegisterControllers.dart';
+import 'package:vod/screens/Login.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/clippers/TopCircleClipper.dart';
 import 'package:vod/utils/Constants.dart';
@@ -11,20 +11,23 @@ import 'package:vod/widgets/Buttons.dart';
 import 'package:vod/widgets/TextFields.dart';
 import 'package:vod/utils/Utils.dart';
 
-class Login extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> implements LoginListener {
-  LoginController controller;
+class _RegisterState extends State<Register> implements RegisterListener {
+  RegisterController controller;
   Scaffold scaffold;
   BuildContext _scaffoldContext;
   final emailController = new TextEditingController();
   final passwordController = new TextEditingController();
+  final confirmPasswordController = new TextEditingController();
+  final nameController = new TextEditingController();
+  final phoneController = new TextEditingController();
 
-  _LoginState() {
-    controller = LoginController(listener: this);
+  _RegisterState() {
+    controller = RegisterController(listener: this);
   }
 
   @override
@@ -34,21 +37,7 @@ class _LoginState extends State<Login> implements LoginListener {
 
   @override
   Widget build(BuildContext context) {
-    Widget forgotPassword = new Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new InkWell(
-            onTap: () {
-              //    Navigator.of(context).pushNamed('/Register');
-              Utils.snackBar("Forgot Password", _scaffoldContext);
-            },
-            child: new Padding(
-                padding: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-                child: new Text("Forgot Password ?",
-                    style: new TextStyle(color: primaryColor)))),
-      ],
-    );
+
 
     validator(){
       if (emailController.text.isEmpty) {
@@ -59,7 +48,7 @@ class _LoginState extends State<Login> implements LoginListener {
         if (Utils.isValidMail(emailController.text)) {
           if (passwordController.text.length >= 6) {
             // Loigin API to be called over here
-            Utils.snackBar("Login Api Call", _scaffoldContext);
+            Utils.snackBar("Register Api Call", _scaffoldContext);
           } else {
             Utils.snackBar("The password should be minimum 6 digits",
                 _scaffoldContext);
@@ -71,16 +60,16 @@ class _LoginState extends State<Login> implements LoginListener {
       }
     }
 
-    Widget loginButton = VodButton(
+    Widget RegisterButton = VodButton(
         buttonColor: primaryColor,
-        label: "Login",
+        label: "Register",
         onClicked: () {
          validator();
         });
 
     Widget facebookButton = VodButton(
         buttonColor: Color.fromARGB(255, 59, 89, 152),
-        label: "Login with Facebook",
+        label: "Register with Facebook",
         imageAsset: "assets/images/facebook.png" ,
         onClicked: () {
           validator();
@@ -88,7 +77,7 @@ class _LoginState extends State<Login> implements LoginListener {
 
     Widget googleButton = VodButton(
         buttonColor: Color.fromARGB(255, 221, 75, 57),
-        label: "Login with Google",
+        label: "Register with Google",
         imageAsset: "assets/images/google.png" ,
         onClicked: () {
           validator();
@@ -96,27 +85,27 @@ class _LoginState extends State<Login> implements LoginListener {
 
 
 
-    Widget signupView = new Row(
+    Widget loginView = new Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         new Padding(
           padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
           child: new Text(
-            "New User? ",
+            "Already have an account ? ",
             style: new TextStyle(color: Colors.black),
           ),
         ),
         new InkWell(
             onTap: () {
               // Navigator.of(context).pushNamed('/Register');
-              Navigator.push(
-                  context, new MaterialPageRoute(builder: (c) => new Register()));
-            //  Utils.snackBar("Register", _scaffoldContext);
+              Navigator.pushReplacement(
+                  context, new MaterialPageRoute(builder: (c) => new Login()));
+            //  Utils.snackBar("Login", _scaffoldContext);
             },
             child: new Padding(
                 padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                child: new Text("Register",
+                child: new Text("Login",
                     style: new TextStyle(color: primaryColor)))),
       ],
     );
@@ -156,6 +145,18 @@ class _LoginState extends State<Login> implements LoginListener {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
+
+                                  // Name Field
+                                  new VodTextField(
+                                    activeColor: primaryColor,
+                                    inActiveColor: hintColor,
+                                    label: "Name",
+                                    hintText: "Enter your name",
+                                    inputType: TextInputType.text,
+                                    editingController: nameController,
+                                  ),
+
+                                  // Email Field
                                   new VodTextField(
                                     activeColor: primaryColor,
                                     inActiveColor: hintColor,
@@ -164,6 +165,20 @@ class _LoginState extends State<Login> implements LoginListener {
                                     inputType: TextInputType.emailAddress,
                                     editingController: emailController,
                                   ),
+
+
+                                  // Password field
+                                  PHONE_NUMBER_REGISTERATION == 1 ?
+                                  new VodTextField(
+                                    activeColor: primaryColor,
+                                    inActiveColor: hintColor,
+                                    label: "Phone",
+                                    hintText: "Enter your phone number",
+                                    editingController: phoneController,
+                                  ) :
+                                  Container(),
+
+                                  // Password Field
                                   new VodTextField(
                                     activeColor: primaryColor,
                                     inActiveColor: hintColor,
@@ -176,14 +191,25 @@ class _LoginState extends State<Login> implements LoginListener {
                                     editingController: passwordController,
                                   ),
 
-                                  //Forgot password text
-                                  Padding(padding: EdgeInsets.only(top: 16.0, bottom: 8.0), child: forgotPassword),
+                                  // Confirm Password Field
+                                  new VodTextField(
+                                    activeColor: primaryColor,
+                                    inActiveColor: hintColor,
+                                    label: "Confirm Password",
+                                    hintText: "Re Enter your password",
+                                    obscureText: true,
+                                    suffixIcon: Icon(Icons.visibility),
+                                    obscureToggle: true,
+                                    obscureIcon: Icon(Icons.visibility_off),
+                                    editingController: confirmPasswordController,
+                                  ),
 
-                                  // Login Button
-                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: loginButton),
+
+                                  // Register Button
+                                  Padding(padding: EdgeInsets.only(top: 16.0, bottom: 8.0), child: RegisterButton),
 
                                   // New User Signup Text
-                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: signupView),
+                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: loginView),
 
                                   // Facebook Button
                                   FACEBOOK_LOGIN == 1 ?
@@ -246,5 +272,5 @@ class _LoginState extends State<Login> implements LoginListener {
   void onFailure() {}
 
   @override
-  void onLoginSuccess() {}
+  void onRegisterSuccess() {}
 }
