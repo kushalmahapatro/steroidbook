@@ -6,3 +6,4 @@ export 'api/IsRegistrationEnabled.dart';
 export 'api/GetLanguageList.dart';
 export 'api/TextTranslation.dart';
 export 'api/GetProfileDetails.dart';
+export 'api/GetAppHomeFeature.dart';

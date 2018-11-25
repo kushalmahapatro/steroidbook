@@ -1,7 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:vod/sdk/Api.dart';
-import 'package:vod/sdk/ApiConstants.dart';
-import 'package:vod/sdk/api/GetAppHomeFeature.dart';
 import 'package:vod/utils/Utils.dart';
 
 class HomePageController {
