@@ -61,9 +61,17 @@ class _FeatureSectionState extends State<FeatureSection> {
                   .toString()
                   .trim(),
               isVertical: widget.isVertical,
-              onClicked: () {
+              onClicked: widget.isVertical ? () {
                 Utils.snackBar(
                     "VR_" +
+                        widget
+                            .section
+                            .homeFeaturePageSectionDetailsModel[index]
+                            .permalink,
+                    context);
+              } : () {
+                Utils.snackBar(
+                    "HR_" +
                         widget
                             .section
                             .homeFeaturePageSectionDetailsModel[index]
