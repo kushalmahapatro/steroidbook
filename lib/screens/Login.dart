@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:vod/controllers/LoginControllers.dart';
+import 'package:vod/screens/HomePage.dart';
 import 'package:vod/screens/Register.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/clippers/TopCircleClipper.dart';
@@ -75,7 +76,9 @@ class _LoginState extends State<Login> implements LoginListener {
         buttonColor: primaryColor,
         label: "Login",
         onClicked: () {
-         validator();
+//         validator();
+          Navigator.pushReplacement(
+              context, new MaterialPageRoute(builder: (c) => new HomePage()));
         });
 
     Widget facebookButton = VodButton(
@@ -83,7 +86,7 @@ class _LoginState extends State<Login> implements LoginListener {
         label: "Login with Facebook",
         imageAsset: "assets/images/facebook.png" ,
         onClicked: () {
-          validator();
+          Utils.snackBar("Login with Facebook", _scaffoldContext);
         });
 
     Widget googleButton = VodButton(
@@ -91,7 +94,7 @@ class _LoginState extends State<Login> implements LoginListener {
         label: "Login with Google",
         imageAsset: "assets/images/google.png" ,
         onClicked: () {
-          validator();
+          Utils.snackBar("Login with Google", _scaffoldContext);
         });
 
 

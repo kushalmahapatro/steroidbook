@@ -21,6 +21,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: ^0.11.3+17
   shared_preferences: ^0.4.3
+  carousel_pro: ^0.0.13
 
 dev_dependencies:
   flutter_test:
