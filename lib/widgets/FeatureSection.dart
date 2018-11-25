@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
 import 'package:vod/utils/ColorSwatch.dart';
+import 'package:vod/utils/Constants.dart';
 import 'package:vod/widgets/FeatureContentHorizontal.dart';
 import 'package:vod/widgets/FeatureContentVertical.dart';
 
@@ -9,7 +10,7 @@ class FeatureSection extends StatefulWidget {
 
   final HomeFeaturePageSectionModel section;
   final String buttonText;
-  final Color buttonBgColor, buttonTextColor;
+  final Color buttonBgColor, buttonTextColor, titleTextColor;
   final Function onButtonPress;
   final bool isVertical;
 
@@ -17,6 +18,7 @@ class FeatureSection extends StatefulWidget {
     this.section,
     this.buttonText = "View More",
     this.buttonBgColor = primaryColor,
+    this.titleTextColor = Colors.white,
     this.buttonTextColor = Colors.white,
     this.onButtonPress,
     this.isVertical = false,
@@ -28,7 +30,7 @@ class FeatureSection extends StatefulWidget {
 
 class _FeatureSectionState extends State<FeatureSection> {
   String _buttonText;
-  Color _buttonBgColor, _buttonTextColor;
+  Color _buttonBgColor, _buttonTextColor, _titleTextColor;
   bool _isVertical;
 
   @override
@@ -37,6 +39,7 @@ class _FeatureSectionState extends State<FeatureSection> {
     _buttonTextColor ??= widget.buttonTextColor;
     _buttonText ??= widget.buttonText;
     _isVertical ??= widget.isVertical;
+    _titleTextColor ??= widget.titleTextColor;
     super.initState();
   }
 
@@ -45,7 +48,7 @@ class _FeatureSectionState extends State<FeatureSection> {
     Widget horizontalList = new Container(
       child: new ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: int.parse(widget.section.total) >= 5 ? 5 : int.parse(widget.section.total),
+          itemCount: int.parse(widget.section.total) >= SECTION_CONTENT_LIMIT ? SECTION_CONTENT_LIMIT : int.parse(widget.section.total),
           itemBuilder: (BuildContext ctxt, int index) {
 
             if( widget.isVertical ) {
@@ -58,20 +61,19 @@ class _FeatureSectionState extends State<FeatureSection> {
                   title: widget.section.homeFeaturePageSectionDetailsModel[index].name.toString().trim());
             }
           }),
-      height: _isVertical ? 150.0 : 90.0,
+      height: _isVertical ? VR_HEIGHT : HR_HEIGHT,
     );
     // TODO: implement build
     return Column(children: <Widget>[
       Padding(
         padding: new EdgeInsets.fromLTRB(7, 7, 4, 7),
         child: new Row(
-//              crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(widget.section.title,
-              style: new TextStyle(color: Colors.white),
+              style: new TextStyle(color: widget.titleTextColor, fontSize: SECTION_TITLE_SIZE ),
             ),
-            int.parse(widget.section.total) >= 5 ?
+            int.parse(widget.section.total) > SECTION_CONTENT_LIMIT ?
             FlatButton(
                 onPressed: widget.onButtonPress,
                 color: widget.buttonBgColor,

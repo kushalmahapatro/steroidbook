@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vod/utils/Constants.dart';
 
 class HrFeatureContent extends StatefulWidget {
   final ImageProvider image;
@@ -54,8 +55,8 @@ class _HrFeatureContentState extends State<HrFeatureContent> {
     // TODO: implement build
     return Container(
       margin: EdgeInsets.fromLTRB(5.0, 0, 5.0, 0),
-      width: 160.0,
-      height: 90.0,
+      width: HR_WIDTH,
+      height: HR_HEIGHT,
       child: new Stack(
         children: <Widget>[
           ClipRRect(
@@ -88,7 +89,7 @@ class _HrFeatureContentState extends State<HrFeatureContent> {
                         child: Text(widget.title,
                           maxLines: widget.textLine,
                           overflow: TextOverflow.ellipsis,
-                          style: new TextStyle(color: widget.titleColor),
+                          style: new TextStyle(color: widget.titleColor, fontSize: SECTION_CONTENT_NAME),
                         ),
                       )))
             ],
