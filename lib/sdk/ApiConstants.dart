@@ -5,15 +5,35 @@ const String _BASE_URL = BASE_URL;
 const String _IP_ADDRESS_ENDPOINT =  "https://api.ipify.org/?format=json";
 const String _CHECK_GEO_BLOCK_ENDPONT = "checkGeoBlock";
 const String _GET_PLAN_LIST_ENDPONT = "getStudioPlanLists";
+const String _GET_LANGUAGE_LIST_ENDPOINT = "getLanguageList";
+const String _IS_REGISTRATION_ENABLED_ENDPOINT = "isRegistrationEnabled";
+const String _TEXT_TRANSLATION_ENDPOINT = "textTranslation";
+const String _GET_PROFILE_DETAILS_ENDPOINT = "getProfileDetails";
 
 String ipAddressUrl() {
   return _IP_ADDRESS_ENDPOINT;
+}
+
+String getPlanListUrl() {
+  return _BASE_URL + _GET_PLAN_LIST_ENDPONT;
 }
 
 String checkGeoBlockUrl() {
   return _BASE_URL + _CHECK_GEO_BLOCK_ENDPONT;
 }
 
-String getPlanListUrl() {
-  return _BASE_URL + _GET_PLAN_LIST_ENDPONT;
+String getLanguageListUrl() {
+  return _BASE_URL + _GET_LANGUAGE_LIST_ENDPOINT;
+}
+
+String isRegistrationEnabledUrl() {
+  return _BASE_URL + _IS_REGISTRATION_ENABLED_ENDPOINT;
+}
+
+String textTranslationUrl() {
+  return _BASE_URL + _TEXT_TRANSLATION_ENDPOINT;
+}
+
+String getProfileDetailsUrl() {
+  return _BASE_URL + _GET_PROFILE_DETAILS_ENDPOINT;
 }
