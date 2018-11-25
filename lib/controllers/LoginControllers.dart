@@ -13,10 +13,7 @@ class LoginController {
 
   LoginController({@required this.listener}) :
         emailController = TextEditingController(), emailNode = FocusNode(),
-        passwordController = TextEditingController(), passwordNode = FocusNode(){
-    passwordObscure ??= true;
-    obscureIcon ??= Icon(Icons.visibility);
-  }
+        passwordController = TextEditingController(), passwordNode = FocusNode();
 
 }
 

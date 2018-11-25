@@ -86,22 +86,32 @@ class _VodTextFieldState extends State<VodTextField> {
       keyboardType: widget.inputType,
       autofocus: false,
       obscureText: _obscureText,
-      decoration: InputDecoration(
+      decoration:  _suffixIcon != null ?
+      textFieldWithIcon(iconPressed) :
+      textFieldWithoutIcon()
+    );
+  }
+  InputDecoration textFieldWithIcon(Function iconPressed){
+        return InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(color: widget.inActiveColor),
           labelText: widget.label,
           labelStyle: TextStyle(color: _labelColor),
-          suffixIcon: _suffixIcon != null
-              ? Padding(
+          suffixIcon:  Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
                   child: IconButton(
                     icon: _suffixIcon,
                     onPressed:
                         widget.obscureToggle == null ? null : iconPressed,
-                  ))
-              : Padding(
-                  padding: EdgeInsets.all(0.0),
-                )),
-    );
-  }
+                  )));
+    }
+
+    InputDecoration textFieldWithoutIcon(){
+        return InputDecoration(
+          hintText: widget.hintText,
+          hintStyle: TextStyle(color: widget.inActiveColor),
+          labelText: widget.label,
+          labelStyle: TextStyle(color: _labelColor),
+          );
+    }
 }

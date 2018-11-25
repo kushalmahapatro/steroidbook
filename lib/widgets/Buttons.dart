@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vod/utils/ColorSwatch.dart';
-import 'package:vod/utils/Utils.dart';
 
 class VodButton extends StatefulWidget {
   final Color buttonColor;

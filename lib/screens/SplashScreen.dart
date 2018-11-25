@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:vod/screens/HomePage.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/controllers/SplashScreenController.dart';
 import 'Login.dart';
@@ -18,11 +19,11 @@ class _SplashScreenState extends State<SplashScreen>
 
   _SplashScreenState() {
     controller = SplashScreenController(listener: this);
+    controller.callApi();
   }
 
   @override
   Widget build(BuildContext context) {
-    controller.callApi();
     return Scaffold(
         primary: false,
         body: new Container(
@@ -82,7 +83,10 @@ class _SplashScreenState extends State<SplashScreen>
         Navigator.pushReplacement(
             context, new MaterialPageRoute(builder: (c) => new Login()));
         break;
-
+      case Routes.HOME:
+        Navigator.pushReplacement(
+            context, new MaterialPageRoute(builder: (c) => new HomePage()));
+        break;
       default:
         break;
     }

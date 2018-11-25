@@ -9,6 +9,7 @@ const String _GET_LANGUAGE_LIST_ENDPOINT = "getLanguageList";
 const String _IS_REGISTRATION_ENABLED_ENDPOINT = "isRegistrationEnabled";
 const String _TEXT_TRANSLATION_ENDPOINT = "textTranslation";
 const String _GET_PROFILE_DETAILS_ENDPOINT = "getProfileDetails";
+const String _GET_APP_HOME_FEATURE = "GetAppHomeFeature";
 
 String ipAddressUrl() {
   return _IP_ADDRESS_ENDPOINT;
@@ -36,4 +37,9 @@ String textTranslationUrl() {
 
 String getProfileDetailsUrl() {
   return _BASE_URL + _GET_PROFILE_DETAILS_ENDPOINT;
+}
+
+
+String getAppHomeFeature() {
+  return _BASE_URL + _GET_APP_HOME_FEATURE;
 }
