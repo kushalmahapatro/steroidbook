@@ -18,8 +18,11 @@ const int GOOGLE_LOGIN = 1;
 // 1 to enable Phone number in Registration and 0 to disable
 const int PHONE_NUMBER_REGISTERATION = 1;
 
-// Sectioni content limit
+// Section content limit
 const int SECTION_CONTENT_LIMIT = 5;
+
+// Radious of card
+const double RADIOUS_CARD = 5.0;
 
 // Feature section title font size
 const double SECTION_TITLE_SIZE = 17.0;
