@@ -26,6 +26,9 @@ class _VrFeatureContentState extends State<VrFeatureContent> {
   String _title;
   Color _titleColor, _gradientEndColor;
   int _textLine;
+  var _loadImage = new AssetImage(
+      'assets/images/logo.png');
+  bool _checkLoaded = true;
 
   @override
   void initState() {
@@ -33,6 +36,14 @@ class _VrFeatureContentState extends State<VrFeatureContent> {
     _titleColor ??= widget.titleColor;
     _gradientEndColor ??= widget.gradientEndColor;
     _textLine ??= widget.textLine;
+
+    widget.image.resolve(new ImageConfiguration()).addListener((_, __) {
+      if (mounted) {
+        setState(() {
+          _checkLoaded = false;
+        });
+      }
+    });
     super.initState();
   }
 
@@ -41,16 +52,16 @@ class _VrFeatureContentState extends State<VrFeatureContent> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: EdgeInsets.fromLTRB(3.0, 0, 3.0, 0),
-      width: 140.0,
-      height: 200.0,
+      margin: EdgeInsets.fromLTRB(5.0, 0, 5.0, 0),
+      width: 105.0,
+      height: 150.0,
       child: new Stack(
         children: <Widget>[
           ClipRRect(
               borderRadius: new BorderRadius.circular(4.0),
               child: new Container(
                 decoration: new BoxDecoration(
-                    image: new DecorationImage(image: widget.image,
+                    image: new DecorationImage(image: _checkLoaded ? _loadImage : widget.image,
                         fit: BoxFit.contain)
                 ),
               )

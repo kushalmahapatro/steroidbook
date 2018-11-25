@@ -110,21 +110,23 @@ class CarouselState extends State<Carousel> {
   @override
   void initState() {
     _image ??= widget.isDynamic ? widget.images[0] : widget.images;
-    super.initState();
-
     if(widget.autoplay) {
       new Timer.periodic(widget.autoplayDuration, (_) {
-        if(_controller.page == _image.length-1) {
-          _controller.animateToPage(
-            0,
-            duration: widget.animationDuration,
-            curve: widget.animationCurve,
-          );
-        } else {
-          _controller.nextPage(duration: widget.animationDuration, curve: widget.animationCurve);
+        if( _controller.hasClients) {
+          if (_controller.page == _image.length - 1) {
+            _controller.animateToPage(
+              0,
+              duration: widget.animationDuration,
+              curve: widget.animationCurve,
+            );
+          } else {
+            _controller.nextPage(duration: widget.animationDuration,
+                curve: widget.animationCurve);
+          }
         }
       });
     }
+    super.initState();
   }
 
   @override
@@ -134,6 +136,7 @@ class CarouselState extends State<Carousel> {
 
   @override
   Widget build(BuildContext context) {
+
     final List listImages = _image.map(
             (netImage) =>
         new Container(
@@ -213,6 +216,7 @@ class CarouselState extends State<Carousel> {
       ),
     );
   }
+
 }
 
 /// An indicator showing the currently selected page of a PageController
@@ -280,4 +284,5 @@ class DotsIndicator extends AnimatedWidget {
       children: new List<Widget>.generate(itemCount, _buildDot),
     );
   }
+
 }

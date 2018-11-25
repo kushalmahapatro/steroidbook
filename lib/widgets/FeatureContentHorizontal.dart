@@ -26,6 +26,9 @@ class _HrFeatureContentState extends State<HrFeatureContent> {
   String _title;
   Color _titleColor, _gradientEndColor;
   int _textLine;
+  var _loadImage = new AssetImage(
+      'assets/images/logo.png');
+  bool _checkLoaded = true;
 
   @override
   void initState() {
@@ -33,6 +36,15 @@ class _HrFeatureContentState extends State<HrFeatureContent> {
     _titleColor ??= widget.titleColor;
     _gradientEndColor ??= widget.gradientEndColor;
     _textLine ??= widget.textLine;
+
+    widget.image.resolve(new ImageConfiguration()).addListener((_, __) {
+      if (mounted) {
+        setState(() {
+          _checkLoaded = false;
+        });
+      }
+    });
+
     super.initState();
   }
 
@@ -41,7 +53,7 @@ class _HrFeatureContentState extends State<HrFeatureContent> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: EdgeInsets.fromLTRB(3.0, 0, 3.0, 0),
+      margin: EdgeInsets.fromLTRB(5.0, 0, 5.0, 0),
       width: 160.0,
       height: 90.0,
       child: new Stack(
@@ -50,8 +62,8 @@ class _HrFeatureContentState extends State<HrFeatureContent> {
             borderRadius: new BorderRadius.circular(4.0),
             child: new Container(
               decoration: new BoxDecoration(
-                  image: new DecorationImage(image: widget.image,
-                      fit: BoxFit.cover)
+                  image: new DecorationImage(image: _checkLoaded ? _loadImage : widget.image,
+                      fit: BoxFit.contain)
               ),
             )
           ),

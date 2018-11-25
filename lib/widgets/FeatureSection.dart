@@ -47,6 +47,7 @@ class _FeatureSectionState extends State<FeatureSection> {
           scrollDirection: Axis.horizontal,
           itemCount: int.parse(widget.section.total) >= 5 ? 5 : int.parse(widget.section.total),
           itemBuilder: (BuildContext ctxt, int index) {
+
             if( widget.isVertical ) {
               return new VrFeatureContent(
                   image: NetworkImage(widget.section.homeFeaturePageSectionDetailsModel[index].poster_url.toString().trim()),
@@ -57,7 +58,7 @@ class _FeatureSectionState extends State<FeatureSection> {
                   title: widget.section.homeFeaturePageSectionDetailsModel[index].name.toString().trim());
             }
           }),
-      height: 90.0,
+      height: _isVertical ? 150.0 : 90.0,
     );
     // TODO: implement build
     return Column(children: <Widget>[

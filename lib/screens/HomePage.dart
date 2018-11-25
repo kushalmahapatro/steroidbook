@@ -1,12 +1,15 @@
+import 'dart:async';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vod/controllers/HomePageControllers.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
-import 'package:vod/utils/CircularLoader.dart';
+import 'package:vod/widgets/CircularLoader.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/utils/MyBehaviour.dart';
 import 'package:vod/utils/Utils.dart';
 import 'package:vod/widgets/Carousel.dart';
+import 'package:vod/widgets/ColorLoader.dart';
 import 'package:vod/widgets/FeatureSection.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,6 +30,9 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
 
   Scaffold scaffold;
   BuildContext _context;
+
+  List <Color> loaderColors = [primaryColor];
+
   Icon actionIcon = new Icon(
     Icons.search,
     color: Colors.white,
@@ -50,7 +56,7 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
             new IconButton(
               icon: actionIcon,
               onPressed: () {
-                Utils.snackBar("Searcg", _context);
+                Utils.snackBar("Search", _context);
               },
             ),
           ]);
@@ -65,6 +71,14 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
             .trim()));
       }
       return image;
+    }
+
+    Future<ui.Image> _getImage(String url) {
+      Completer<ui.Image> completer = new Completer<ui.Image>();
+      new NetworkImage(url)
+          .resolve(new ImageConfiguration())
+          .addListener((ImageInfo info, bool _) => completer.complete(info.image));
+      return completer.future;
     }
 
     Widget body = apiFetched
@@ -95,17 +109,42 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
                     );
                   } else {
                     if (homePageData
-                            .homePageSectionModelList[index - 2].section_type ==
-                        "0") {
-                      return new FeatureSection(
-                        section:
-                            homePageData.homePageSectionModelList[index - 2],
-                        onButtonPress: () {
-                          Utils.snackBar(
-                              homePageData.homePageSectionModelList[index - 2]
-                                  .section_id,
-                              _context);
-                        },
+                            .homePageSectionModelList[index - 2].section_type == "0") {
+                      return new Container(
+                        child: new FutureBuilder<ui.Image>(
+                          future: _getImage(homePageData.homePageSectionModelList[index - 2].homeFeaturePageSectionDetailsModel[0].poster_url),
+                            builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
+                              if (snapshot.hasData) {
+                                if(snapshot.data.width > snapshot.data.height){
+                                  return new FeatureSection(
+                                    section:
+                                    homePageData.homePageSectionModelList[index - 2],
+                                    isVertical: false,
+                                    onButtonPress: () {
+                                      Utils.snackBar(
+                                          homePageData.homePageSectionModelList[index - 2]
+                                              .section_id,
+                                          _context);
+                                    },
+                                  );
+                                }else{
+                                  return new FeatureSection(
+                                    section:
+                                    homePageData.homePageSectionModelList[index - 2],
+                                    isVertical: true,
+                                    onButtonPress: () {
+                                      Utils.snackBar(
+                                          homePageData.homePageSectionModelList[index - 2]
+                                              .section_id,
+                                          _context);
+                                    },
+                                  );
+                                }
+                              }else{
+                                return new Container();
+                              }
+                            },
+                          ),
                       );
                     } else {
                       return new Container();
@@ -115,11 +154,14 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
           ))
         : Container(
             child: Center(
-              child: ColorLoader(
+              child: ColorLoaderPlain(colors: loaderColors,
+              duration: Duration(milliseconds: 1200),)
+
+              /*ColorLoader(
                 color1: primaryColor,
                 color2: Colors.white,
                 color3: primaryColor,
-              ),
+              ),*/
             ),
           );
     ;
