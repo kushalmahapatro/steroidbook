@@ -3,13 +3,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vod/controllers/HomePageControllers.dart';
+import 'package:vod/screens/MovieDetailsPage.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
-import 'package:vod/widgets/CircularLoader.dart';
 import 'package:vod/utils/ColorSwatch.dart';
+import 'package:vod/utils/Constants.dart';
 import 'package:vod/utils/MyBehaviour.dart';
 import 'package:vod/utils/Utils.dart';
 import 'package:vod/widgets/Carousel.dart';
 import 'package:vod/widgets/ColorLoader.dart';
+import 'package:vod/widgets/FeatureContent.dart';
 import 'package:vod/widgets/FeatureSection.dart';
 
 class HomePage extends StatefulWidget {
@@ -44,13 +46,13 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     Widget buildBar(BuildContext context) {
       return new AppBar(
           centerTitle: true,
           title: appBarTitle,
+          brightness: Brightness.dark,
           backgroundColor: primaryColor,
           actions: <Widget>[
             new IconButton(
@@ -64,9 +66,9 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
 
     List bannerImages() {
       List image = new List();
-      for (int i = 0; i < homePageData.homePageBannerModelList.length; i++) {
+      for (int i = 0; i < homePageData.bannerSectionList.length; i++) {
         image.add(NetworkImage(homePageData
-            .homePageBannerModelList[i].image_path
+            .bannerSectionList[i].imagePath
             .toString()
             .trim()));
       }
@@ -81,12 +83,39 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
       return completer.future;
     }
 
+    horizontalList(bool isVertical, HomeFeaturePageSectionModel section){
+    return new Container(
+      child: new ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: int.parse(section.total) >= SECTION_CONTENT_LIMIT
+              ? SECTION_CONTENT_LIMIT
+              : int.parse(section.total),
+          itemBuilder: (BuildContext ctxt, int index) {
+            return new FeatureContent(
+              image: NetworkImage(section.data[index].posterUrl
+                  .toString()
+                  .trim()),
+              title: section.data[index].name
+                  .toString()
+                  .trim(),
+              isVertical: isVertical,
+              onClicked: () {
+                Navigator.push(
+                    context, new MaterialPageRoute(builder: (c) =>
+                new MovieDetailsPage(
+                    contentDetails: section.data[index])));
+              }
+            );
+          }),
+      height: isVertical ? VR_HEIGHT : HR_HEIGHT,
+    );}
     Widget body = apiFetched
         ? new Container(
             child: ScrollConfiguration(
             behavior: MyBehavior(),
             child: ListView.builder(
-                itemCount: homePageData.homePageSectionModelList.length + 2,
+              padding: EdgeInsets.only(bottom: 100.0),
+                itemCount: homePageData.sectionName.length + 2,
                 itemBuilder: (BuildContext ctxt, int index) {
                   if (index == 0) {
                     return new SizedBox(
@@ -109,35 +138,36 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
                     );
                   } else {
                     if (homePageData
-                            .homePageSectionModelList[index - 2].section_type == "0") {
+                            .sectionName[index - 2].sectionType == "0") {
                       return new Container(
                         child: new FutureBuilder<ui.Image>(
-                          future: _getImage(homePageData.homePageSectionModelList[index - 2].homeFeaturePageSectionDetailsModel[0].poster_url),
+                          future: _getImage(homePageData.sectionName[index - 2].data[0].posterUrl),
                             builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
                               if (snapshot.hasData) {
                                 if(snapshot.data.width > snapshot.data.height){
                                   return new FeatureSection(
                                     section:
-                                    homePageData.homePageSectionModelList[index - 2],
+                                    homePageData.sectionName[index - 2],
                                     isVertical: false,
                                     onButtonPress: () {
                                       Utils.snackBar(
-                                          homePageData.homePageSectionModelList[index - 2]
-                                              .section_id,
+                                          homePageData.sectionName[index - 2]
+                                              .sectionId,
                                           _context);
-                                    },
+                                    },child: horizontalList (false, homePageData.sectionName[index - 2]),
                                   );
                                 }else{
                                   return new FeatureSection(
                                     section:
-                                    homePageData.homePageSectionModelList[index - 2],
+                                    homePageData.sectionName[index - 2],
                                     isVertical: true,
                                     onButtonPress: () {
                                       Utils.snackBar(
-                                          homePageData.homePageSectionModelList[index - 2]
-                                              .section_id,
+                                          homePageData.sectionName[index - 2]
+                                              .sectionId,
                                           _context);
                                     },
+                                    child: horizontalList(true , homePageData.sectionName[index - 2]),
                                   );
                                 }
                               }else{
@@ -156,19 +186,13 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
             child: Center(
               child: ColorLoaderPlain(colors: loaderColors,
               duration: Duration(milliseconds: 1200),)
-
-              /*ColorLoader(
-                color1: primaryColor,
-                color2: Colors.white,
-                color3: primaryColor,
-              ),*/
             ),
           );
     ;
 
     scaffold = new Scaffold(
         appBar: buildBar(context),
-        backgroundColor: Colors.black,
+        backgroundColor: appbackgroundColor,
         body: Builder(builder: (BuildContext _buildContext) {
           _context = _buildContext;
           return body;

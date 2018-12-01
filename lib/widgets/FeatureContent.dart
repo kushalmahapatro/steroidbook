@@ -30,7 +30,7 @@ class FeatureContent extends StatefulWidget {
 
 class _FeatureContentState extends State<FeatureContent> {
   String _title;
-  Color _titleColor, _gradientEndColor;
+  Color _titleColor, _gradientEndColor = Colors.transparent;
   int _textLine;
   var _loadImage = new AssetImage(
       'assets/images/logo.png');

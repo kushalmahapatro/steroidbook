@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/utils/Constants.dart';
-import 'package:vod/utils/Utils.dart';
-import 'package:vod/widgets/FeatureContent.dart';
+import 'package:vod/widgets/Buttons.dart';
 
 class FeatureSection extends StatefulWidget {
   final HomeFeaturePageSectionModel section;
@@ -12,6 +11,7 @@ class FeatureSection extends StatefulWidget {
   final Color buttonBgColor, buttonTextColor, titleTextColor;
   final Function onButtonPress;
   final bool isVertical;
+  final Widget child;
 
   FeatureSection({
     this.section,
@@ -21,6 +21,7 @@ class FeatureSection extends StatefulWidget {
     this.buttonTextColor = Colors.white,
     this.onButtonPress,
     this.isVertical = false,
+    this.child,
   });
 
   @override
@@ -31,6 +32,7 @@ class _FeatureSectionState extends State<FeatureSection> {
   String _buttonText;
   Color _buttonBgColor, _buttonTextColor, _titleTextColor;
   bool _isVertical;
+  int clickedPosition;
 
   @override
   void initState() {
@@ -44,44 +46,6 @@ class _FeatureSectionState extends State<FeatureSection> {
 
   @override
   Widget build(BuildContext context) {
-    Widget horizontalList = new Container(
-      child: new ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: int.parse(widget.section.total) >= SECTION_CONTENT_LIMIT
-              ? SECTION_CONTENT_LIMIT
-              : int.parse(widget.section.total),
-          itemBuilder: (BuildContext ctxt, int index) {
-            return new FeatureContent(
-              image: NetworkImage(widget.section
-                  .homeFeaturePageSectionDetailsModel[index].poster_url
-                  .toString()
-                  .trim()),
-              title: widget
-                  .section.homeFeaturePageSectionDetailsModel[index].name
-                  .toString()
-                  .trim(),
-              isVertical: widget.isVertical,
-              onClicked: widget.isVertical ? () {
-                Utils.snackBar(
-                    "VR_" +
-                        widget
-                            .section
-                            .homeFeaturePageSectionDetailsModel[index]
-                            .permalink,
-                    context);
-              } : () {
-                Utils.snackBar(
-                    "HR_" +
-                        widget
-                            .section
-                            .homeFeaturePageSectionDetailsModel[index]
-                            .permalink,
-                    context);
-              },
-            );
-          }),
-      height: _isVertical ? VR_HEIGHT : HR_HEIGHT,
-    );
     // TODO: implement build
     return Column(children: <Widget>[
       Padding(
@@ -95,24 +59,24 @@ class _FeatureSectionState extends State<FeatureSection> {
                   color: widget.titleTextColor, fontSize: SECTION_TITLE_SIZE),
             ),
             int.parse(widget.section.total) > SECTION_CONTENT_LIMIT
-                ? FlatButton(
-                    onPressed: widget.onButtonPress,
-                    color: widget.buttonBgColor,
-                    child: Text(
-                      widget.buttonText,
-                      style: TextStyle(color: widget.buttonTextColor),
-                    ))
-                : FlatButton(
-                    onPressed: () {},
-                    color: Colors.transparent,
-                    child: Text(
-                      "",
-                      style: TextStyle(color: Colors.transparent),
-                    )),
+                ? VodButton(
+                    label: widget.buttonText,
+                    textColor: widget.buttonTextColor,
+                    buttonColor: widget.buttonBgColor,
+                    onClicked: widget.onButtonPress,
+                    radious: 4.0,
+                  )
+                : VodButton(
+                    label: "",
+                    textColor: Colors.transparent,
+                    buttonColor: Colors.transparent,
+                    onClicked: () {},
+                    radious: 4.0,
+                  ),
           ],
         ),
       ),
-      horizontalList,
+      widget.child != null ? widget.child : Container(),
     ]);
   }
 }

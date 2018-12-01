@@ -30,6 +30,9 @@ const double SECTION_TITLE_SIZE = 17.0;
 // feature section content name font size
 const double SECTION_CONTENT_NAME = 14.0;
 
+// login page button height
+const double BUTTON_HEIGHT = 50.0;
+
 // feature Section Horizontal Card width and Height
 const double HR_WIDTH = 160.0;
 const double HR_HEIGHT = 90.0

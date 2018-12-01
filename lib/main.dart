@@ -9,8 +9,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.black.withOpacity(0.0)));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: Colors.black.withOpacity(0.2), statusBarIconBrightness: Brightness.light, statusBarBrightness: Brightness.light,//or set color with: Color(0xFF0000FF)
+    ));
     return new MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'VOD Demo',
       theme: new ThemeData(
         primarySwatch: materialPrimary,

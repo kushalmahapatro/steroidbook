@@ -74,6 +74,7 @@ class _LoginState extends State<Login> implements LoginListener {
 
     Widget loginButton = VodButton(
         buttonColor: primaryColor,
+        height: BUTTON_HEIGHT,
         label: "Login",
         onClicked: () {
 //         validator();
@@ -82,7 +83,8 @@ class _LoginState extends State<Login> implements LoginListener {
         });
 
     Widget facebookButton = VodButton(
-        buttonColor: Color.fromARGB(255, 59, 89, 152),
+        buttonColor: facebookButtonColor,
+        height: BUTTON_HEIGHT,
         label: "Login with Facebook",
         imageAsset: "assets/images/facebook.png" ,
         onClicked: () {
@@ -90,7 +92,8 @@ class _LoginState extends State<Login> implements LoginListener {
         });
 
     Widget googleButton = VodButton(
-        buttonColor: Color.fromARGB(255, 221, 75, 57),
+        buttonColor: googleButtonColor,
+        height: BUTTON_HEIGHT,
         label: "Login with Google",
         imageAsset: "assets/images/google.png" ,
         onClicked: () {

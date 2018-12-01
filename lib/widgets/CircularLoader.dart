@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'dart:math';
 
 class ColorLoader extends StatefulWidget {

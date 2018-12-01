@@ -8,6 +8,7 @@ class VodButton extends StatefulWidget {
   final String label;
   final String imageAsset;
   final Function onClicked;
+  final double height, radious;
 
   VodButton({
     this.buttonColor = primaryColor,
@@ -15,6 +16,8 @@ class VodButton extends StatefulWidget {
     this.label = "Button",
     this.imageAsset,
     this.onClicked,
+    this.height,
+    this.radious,
   });
 
   @override
@@ -34,15 +37,18 @@ class _VodButtonState extends State<VodButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 50.0,
-        child: FlatButton(
+        height: widget.height != null ? widget.height : 35.0,
+        child: RaisedButton(
             color: widget.buttonColor,
-            child: widget.label == null ? image()
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(widget.radious != null ? widget.radious : 00.0)),
+            child: widget.label == null
+                ? image()
                 : widget.imageAsset == null ? text() : imageAndText(),
-            onPressed: widget.onClicked));
+            onPressed: widget.onClicked),
+        );
   }
 
-  Widget image(){
+  Widget image() {
     return Padding(
         padding: EdgeInsets.fromLTRB(0.0, 10.0, 5.0, 10.0),
         child: Image.asset(
@@ -51,12 +57,13 @@ class _VodButtonState extends State<VodButton> {
         ));
   }
 
-  Widget text(){
+  Widget text() {
     return Text(
       widget.label,
       style: TextStyle(color: widget.textColor),
     );
   }
+
   Widget imageAndText() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -62,13 +62,15 @@ class _RegisterState extends State<Register> implements RegisterListener {
 
     Widget RegisterButton = VodButton(
         buttonColor: primaryColor,
+        height: BUTTON_HEIGHT,
         label: "Register",
         onClicked: () {
          validator();
         });
 
     Widget facebookButton = VodButton(
-        buttonColor: Color.fromARGB(255, 59, 89, 152),
+        buttonColor: facebookButtonColor,
+        height: BUTTON_HEIGHT,
         label: "Register with Facebook",
         imageAsset: "assets/images/facebook.png" ,
         onClicked: () {
@@ -76,7 +78,8 @@ class _RegisterState extends State<Register> implements RegisterListener {
         });
 
     Widget googleButton = VodButton(
-        buttonColor: Color.fromARGB(255, 221, 75, 57),
+        buttonColor: googleButtonColor,
+        height: BUTTON_HEIGHT,
         label: "Register with Google",
         imageAsset: "assets/images/google.png" ,
         onClicked: () {

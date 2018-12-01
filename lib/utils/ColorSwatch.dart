@@ -6,6 +6,12 @@ const Color primaryColor = const Color(primaryColorInt);
 
 const Color hintColor = Colors.grey;
 
+const Color appbackgroundColor = Colors.black;
+
+const Color googleButtonColor = Color.fromARGB(255, 221, 75, 57);
+
+const Color facebookButtonColor = Color.fromARGB(255, 59, 89, 152);
+
 const MaterialColor materialPrimary =
     const MaterialColor(primaryColorInt, <int, Color>{
   50: Color(0xFF86dcf9),
