@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vod/controllers/RegisterControllers.dart';
 import 'package:vod/screens/Login.dart';
 import 'package:vod/utils/ColorSwatch.dart';
@@ -37,7 +38,9 @@ class _RegisterState extends State<Register> implements RegisterListener {
 
   @override
   Widget build(BuildContext context) {
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
 
     validator(){
       if (emailController.text.isEmpty) {
@@ -96,7 +99,7 @@ class _RegisterState extends State<Register> implements RegisterListener {
           padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
           child: new Text(
             "Already have an account ? ",
-            style: new TextStyle(color: Colors.black),
+            style: new TextStyle(color: hintColor),
           ),
         ),
         new InkWell(
@@ -264,7 +267,7 @@ class _RegisterState extends State<Register> implements RegisterListener {
     if (IMAGE_BACKGROUND) {
       return BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/background.jpg"),
+              image: AssetImage("assets/images/back.png"),
               fit: BoxFit.cover));
     } else {
       return BoxDecoration(color: primaryColor);

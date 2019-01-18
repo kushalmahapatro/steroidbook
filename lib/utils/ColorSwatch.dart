@@ -6,7 +6,11 @@ const Color primaryColor = const Color(primaryColorInt);
 
 const Color hintColor = Colors.grey;
 
+const List<Color> loaderColors = [primaryColor];
+
 const Color appbackgroundColor = Colors.black;
+
+const Color textColor = Colors.white;
 
 const Color googleButtonColor = Color.fromARGB(255, 221, 75, 57);
 

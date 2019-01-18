@@ -3,17 +3,21 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vod/screens/PlayerPage.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/utils/MyBehaviour.dart';
 import 'package:vod/utils/Utils.dart';
 import 'package:vod/widgets/DescriptionTextWidget.dart';
+import 'package:vod/widgets/Episodes.dart';
 import 'package:vod/widgets/Rating.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final HomeFeaturePageSectionDetailsModel contentDetails;
+  final int heroIndex;
 
-  MovieDetailsPage({Key key, @required this.contentDetails}) : super(key: key);
+  MovieDetailsPage({Key key, @required this.contentDetails, this.heroIndex}) : super(key: key);
+//  MovieDetailsPage(this.contentDetails);
 
   @override
   _MovieDetailsPageState createState() => _MovieDetailsPageState();
@@ -25,6 +29,10 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     String story =
         "A short story is a piece of prose fiction that typically can be read in one sitting and focuses on a self-contained incident or series of linked incidents, with the intent of evoking a single effect or mood, however there are many exceptions to this.";
     String cast =
@@ -43,11 +51,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     }
 
     Widget backgroundWidget() {
-      return Positioned.fill(
-          child: Container(
+      return Hero(
+        tag: widget.contentDetails.permalink+"-$widget.heroIndex",
+        child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(this.widget.contentDetails.posterUrl),
+                image: NetworkImage(this.widget.contentDetails.posterUrl.toString().trim()),
                 fit: BoxFit.cover)),
       ));
     }
@@ -83,12 +92,18 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     Widget logoWidget() {
       return Center(
           child: Container(
-            margin: EdgeInsets.only(bottom: 40.0),
+              margin: EdgeInsets.only(bottom: 40.0),
               child: InkWell(
                 child: Icon(Icons.play_circle_outline,
                     color: Colors.white, size: 60.0),
                 onTap: () {
-                  Utils.snackBar("Play Video", _scaffoldContext);
+                  Navigator.pushReplacement(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (c) => new Player(
+                                contentDetails: widget.contentDetails,
+                              )));
+//                  Utils.snackBar("Play Video", _scaffoldContext);
                 },
               )));
     }
@@ -265,6 +280,34 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       );
     }
 
+    Widget reviews() {
+      return ListView.builder(
+          itemCount: 7,
+          itemBuilder: (BuildContext ctxt, int index) {
+            return Padding(
+                padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(bottom: 5.0),
+                        child: StarRating(
+                            color: primaryColor,
+                            borderColor: primaryColor,
+                            size: 17.0,
+                            starCount: 5,
+                            rating: 1 + (index / 2))),
+                    Text(
+                      "This is the best episode I ever watched of this season and I am waiting to watch more of this.",
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.8), fontSize: 14.0),
+                    )
+                  ],
+                ));
+          });
+    }
+
     Widget cd() {
       return ScrollConfiguration(
           behavior: MyBehavior(),
@@ -312,7 +355,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           ));
     }
 
-
     Widget body = DefaultTabController(
         length: multiPart ? 3 : 2,
         child: NestedScrollView(
@@ -320,12 +362,16 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
+                  backgroundColor: Colors.black,
                   brightness: Brightness.dark,
                   leading: BackButton(color: Colors.white),
                   expandedHeight: screenHeight / 2.2,
                   forceElevated: innerBoxIsScrolled,
                   title: innerBoxIsScrolled
-                      ? Text(widget.contentDetails.name)
+                      ? Text(
+                          widget.contentDetails.name,
+                          style: TextStyle(color: Colors.white),
+                        )
                       : Text(""),
                   pinned: true,
                   bottom: TabBar(
@@ -359,8 +405,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             },
             body: TabBarView(
                 children: multiPart
-                    ? [cd(), ExpandableList(), Container()]
-                    : [cd(), Container()])));
+                    ? [cd(), ExpandableList(), reviews()]
+                    : [cd(), reviews()])));
 
     scaffold = new Scaffold(
       backgroundColor: appbackgroundColor,
@@ -374,19 +420,40 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 }
 
 class ExpandableList extends StatelessWidget {
-  final list = new List.generate(10, (i) => "Episode ${i+1}");
+  final list =
+      new List.generate(13, (i) => i + 1 >= 10 ? "E${i + 1}" : "E0${i + 1}");
+
   @override
   Widget build(BuildContext context) {
     return new ListView.builder(
       itemBuilder: (context, i) => ExpansionTile(
-        title: new Text("Season ${i+1}",style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.w900), ),
-        children: list
-            .map((val) => new ListTile(
-          title: Padding( padding: EdgeInsets.only(left: 20.0), child: Text(val, style: TextStyle(color: Colors.white, fontSize: 14.0),)),
-        ))
-            .toList(),
-      ),
-      itemCount: 5,
+            initiallyExpanded: i == 0 ? true : false,
+            title: new Text(
+              "Season ${i + 1}",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w700),
+            ),
+            children: list
+                .map((val) => new ListTile(
+                      title: Padding(
+                          padding: EdgeInsets.only(left: 0.0),
+                          child: VodEpisodes(
+                            isVertical: false,
+                            image: NetworkImage(
+                                "https://static.posters.cz/image/750/posters/the-avengers-age-of-ultron-team-i27856.jpg"),
+                            duration: "45 mins",
+                            episodeName: "The New Episode",
+                            seasonName: i + 1 >= 10
+                                ? "S" + (i + 1).toString() + " : " + val
+                                : "S0" + (i + 1).toString() + ": " + val,
+                            showDownload: true,
+                          )),
+                    ))
+                .toList(),
+          ),
+      itemCount: 2,
     );
   }
 }

@@ -16,7 +16,7 @@ const int FACEBOOK_LOGIN = 1;
 const int GOOGLE_LOGIN = 1;
 
 // 1 to enable Phone number in Registration and 0 to disable
-const int PHONE_NUMBER_REGISTERATION = 1;
+const int PHONE_NUMBER_REGISTERATION = 0;
 
 // Section content limit
 const int SECTION_CONTENT_LIMIT = 5;
@@ -35,8 +35,12 @@ const double BUTTON_HEIGHT = 50.0;
 
 // feature Section Horizontal Card width and Height
 const double HR_WIDTH = 160.0;
-const double HR_HEIGHT = 90.0
+const double HR_HEIGHT = 90.0;
 
-;// feature Section Vertical Card width and Height
+// Episode Horizontal Card width and Height
+const double HR_WIDTH_EPISODE = 140.0;
+const double HR_HEIGHT_EPISODE = 78.75;
+
+// feature Section Vertical Card width and Height
 const double VR_WIDTH = 105.0;
 const double VR_HEIGHT = 150.0;

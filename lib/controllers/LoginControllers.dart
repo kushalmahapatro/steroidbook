@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:vod/sdk/Api.dart';
 
 class LoginController {
   final LoginListener listener;
@@ -11,11 +10,14 @@ class LoginController {
   bool passwordObscure;
   Icon obscureIcon;
 
-  LoginController({@required this.listener}) :
-        emailController = TextEditingController(), emailNode = FocusNode(),
-        passwordController = TextEditingController(), passwordNode = FocusNode();
+  LoginController({@required this.listener})
+      : emailController = TextEditingController(),
+        emailNode = FocusNode(),
+        passwordController = TextEditingController(),
+        passwordNode = FocusNode();
 
 }
+
 
 abstract class LoginListener {
   void onFailure();

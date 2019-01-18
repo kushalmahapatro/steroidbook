@@ -41,17 +41,17 @@ class _SplashScreenState extends State<SplashScreen>
   Widget backgroundWidget() {
     return Positioned.fill(
         child: Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/background.jpg"),
-              fit: BoxFit.cover)),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-        child: Container(
-          decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
-        ),
-      ),
-    ));
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/images/background.jpg"),
+                  fit: BoxFit.cover)),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+            child: Container(
+              decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
+            ),
+          ),
+        ));
   }
 
   Widget logoWidget() {

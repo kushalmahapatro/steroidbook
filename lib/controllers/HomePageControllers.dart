@@ -10,9 +10,17 @@ class HomePageController {
       : preferenceManager = PreferenceManager();
 
   void callApi() async {
-    GetAppHomeFeatureModel appHomeFeature = await getAppHomeFeatureAPI({"authToken": AUTH_TOKEN, "feature_sec_limit": "",
-    "feature_sec_offset": "", "user_id":"", "lang_code": "", "feature_content_limit": "", "feature_content_offset": "", "platform":  "mobile",
-    "country": await preferenceManager.getCountryCodePrefs()});
+    GetAppHomeFeatureModel appHomeFeature = await getAppHomeFeatureAPI({
+      "authToken": AUTH_TOKEN,
+      "feature_sec_limit": "",
+      "feature_sec_offset": "",
+      "user_id": "",
+      "lang_code": "",
+      "feature_content_limit": "",
+      "feature_content_offset": "",
+      "platform": "mobile",
+      "country": await preferenceManager.getCountryCodePrefs()
+    });
 //    await new Future.delayed(const Duration(milliseconds: 1200));
     listener.onApiSuccess(data: appHomeFeature);
   }
@@ -25,4 +33,3 @@ abstract class HomePageListener {
 }
 
 enum Failures { NO_INTERNET, UNKNOWN }
-

@@ -4,7 +4,6 @@ import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/utils/Utils.dart';
 import 'package:flutter/cupertino.dart';
 
-
 class VodTextField extends StatefulWidget {
   final TextEditingController editingController;
   final Color activeColor;
@@ -17,6 +16,8 @@ class VodTextField extends StatefulWidget {
   final Icon suffixIcon;
   final Icon obscureIcon;
   final bool obscureToggle;
+  final bool enable;
+  final String error;
 
   VodTextField({
     this.editingController,
@@ -30,6 +31,8 @@ class VodTextField extends StatefulWidget {
     this.suffixIcon,
     this.obscureIcon,
     this.obscureToggle,
+    this.enable = true,
+    this.error ,
   });
 
   @override
@@ -37,7 +40,7 @@ class VodTextField extends StatefulWidget {
 }
 
 class _VodTextFieldState extends State<VodTextField> {
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode  _focusNode = FocusNode();
   TextEditingController _editingController;
   Widget _suffixIcon;
   Color _labelColor;
@@ -83,37 +86,61 @@ class _VodTextFieldState extends State<VodTextField> {
       _focusNode.addListener(widget.focusListener);
 
     return TextField(
-      controller: _editingController,
-      focusNode: _focusNode,
-      keyboardType: widget.inputType,
-      autofocus: false,
-      obscureText: _obscureText,
-      decoration:  _suffixIcon != null ?
-      textFieldWithIcon(iconPressed) :
-      textFieldWithoutIcon()
-    );
+        style: new TextStyle(color: Colors.white),
+        controller: _editingController,
+        focusNode: _focusNode,
+        enabled: widget.enable,
+        keyboardType: widget.inputType,
+        autofocus: false,
+        obscureText: _obscureText,
+        decoration: _suffixIcon != null
+            ? textFieldWithIcon(iconPressed)
+            : textFieldWithoutIcon());
   }
-  InputDecoration textFieldWithIcon(Function iconPressed){
-        return InputDecoration(
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: widget.inActiveColor),
-          labelText: widget.label,
-          labelStyle: TextStyle(color: _labelColor),
-          suffixIcon:  Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                  child: IconButton(
-                    icon: _suffixIcon,
-                    onPressed:
-                        widget.obscureToggle == null ? null : iconPressed,
-                  )));
-    }
 
-    InputDecoration textFieldWithoutIcon(){
-        return InputDecoration(
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: widget.inActiveColor),
-          labelText: widget.label,
-          labelStyle: TextStyle(color: _labelColor),
-          );
-    }
+  InputDecoration textFieldWithIcon(Function iconPressed) {
+    return InputDecoration(
+        hintText: widget.hintText,
+        errorText: widget.error,
+        hintStyle: TextStyle(color: widget.inActiveColor),
+        labelText: widget.label,
+        labelStyle: TextStyle(color: _labelColor),
+        disabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.inActiveColor)) ,
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.inActiveColor)) ,
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.activeColor)),
+        border: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.inActiveColor)),
+        suffixIcon: Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+            child: IconButton(
+              icon: _suffixIcon,
+              onPressed: widget.obscureToggle == null ? null : iconPressed,
+            )));
+  }
+
+  InputDecoration textFieldWithoutIcon() {
+    return InputDecoration(
+        hintText: widget.hintText,
+        hintStyle: TextStyle(color: widget.inActiveColor),
+        labelText: widget.label,
+        errorText: widget.error,
+        labelStyle: TextStyle(color: _labelColor),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.inActiveColor)) ,
+        disabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.inActiveColor)) ,
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.activeColor)),
+        border: UnderlineInputBorder(
+            borderSide: BorderSide(color: widget.inActiveColor)));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 }

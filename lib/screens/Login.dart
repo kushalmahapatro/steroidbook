@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vod/controllers/LoginControllers.dart';
 import 'package:vod/screens/HomePage.dart';
 import 'package:vod/screens/Register.dart';
 import 'package:vod/utils/ColorSwatch.dart';
-import 'package:vod/clippers/TopCircleClipper.dart';
 import 'package:vod/utils/Constants.dart';
 import 'package:vod/utils/MyBehaviour.dart';
 import 'package:vod/widgets/Buttons.dart';
@@ -24,9 +24,6 @@ class _LoginState extends State<Login> implements LoginListener {
   final emailController = new TextEditingController();
   final passwordController = new TextEditingController();
 
-  _LoginState() {
-    controller = LoginController(listener: this);
-  }
 
   @override
   void initState() {
@@ -35,6 +32,9 @@ class _LoginState extends State<Login> implements LoginListener {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     Widget forgotPassword = new Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> implements LoginListener {
       ],
     );
 
-    validator(){
+    validator() {
       if (emailController.text.isEmpty) {
         Utils.snackBar("Please enter Email Address", _scaffoldContext);
       } else if (passwordController.text.isEmpty) {
@@ -62,12 +62,11 @@ class _LoginState extends State<Login> implements LoginListener {
             // Loigin API to be called over here
             Utils.snackBar("Login Api Call", _scaffoldContext);
           } else {
-            Utils.snackBar("The password should be minimum 6 digits",
-                _scaffoldContext);
+            Utils.snackBar(
+                "The password should be minimum 6 digits", _scaffoldContext);
           }
         } else {
-          Utils.snackBar(
-              "Please enter valid email address", _scaffoldContext);
+          Utils.snackBar("Please enter valid email address", _scaffoldContext);
         }
       }
     }
@@ -86,7 +85,7 @@ class _LoginState extends State<Login> implements LoginListener {
         buttonColor: facebookButtonColor,
         height: BUTTON_HEIGHT,
         label: "Login with Facebook",
-        imageAsset: "assets/images/facebook.png" ,
+        imageAsset: "assets/images/facebook.png",
         onClicked: () {
           Utils.snackBar("Login with Facebook", _scaffoldContext);
         });
@@ -95,12 +94,10 @@ class _LoginState extends State<Login> implements LoginListener {
         buttonColor: googleButtonColor,
         height: BUTTON_HEIGHT,
         label: "Login with Google",
-        imageAsset: "assets/images/google.png" ,
+        imageAsset: "assets/images/google.png",
         onClicked: () {
           Utils.snackBar("Login with Google", _scaffoldContext);
         });
-
-
 
     Widget signupView = new Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,9 +113,9 @@ class _LoginState extends State<Login> implements LoginListener {
         new InkWell(
             onTap: () {
               // Navigator.of(context).pushNamed('/Register');
-              Navigator.push(
-                  context, new MaterialPageRoute(builder: (c) => new Register()));
-            //  Utils.snackBar("Register", _scaffoldContext);
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (c) => new Register()));
+              //  Utils.snackBar("Register", _scaffoldContext);
             },
             child: new Padding(
                 padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
@@ -147,62 +144,64 @@ class _LoginState extends State<Login> implements LoginListener {
                         Padding(
                           padding: EdgeInsets.only(
                               top: 80.0, left: 20.0, right: 20.0, bottom: 80.0),
-                          child: ClipPath(
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  top: 70.0,
-                                  bottom: 20.0,
-                                  left: 20.0,
-                                  right: 20.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              new VodTextField(
+                                activeColor: primaryColor,
+                                inActiveColor: hintColor,
+                                label: "Email",
+                                hintText: "Enter your email",
+                                inputType: TextInputType.emailAddress,
+                                editingController: emailController,
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  new VodTextField(
-                                    activeColor: primaryColor,
-                                    inActiveColor: hintColor,
-                                    label: "Email",
-                                    hintText: "Enter your email",
-                                    inputType: TextInputType.emailAddress,
-                                    editingController: emailController,
-                                  ),
-                                  new VodTextField(
-                                    activeColor: primaryColor,
-                                    inActiveColor: hintColor,
-                                    label: "Password",
-                                    hintText: "Enter your password",
-                                    obscureText: true,
-                                    suffixIcon: Icon(Icons.visibility),
-                                    obscureToggle: true,
-                                    obscureIcon: Icon(Icons.visibility_off),
-                                    editingController: passwordController,
-                                  ),
-
-                                  //Forgot password text
-                                  Padding(padding: EdgeInsets.only(top: 16.0, bottom: 8.0), child: forgotPassword),
-
-                                  // Login Button
-                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: loginButton),
-
-                                  // New User Signup Text
-                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: signupView),
-
-                                  // Facebook Button
-                                  FACEBOOK_LOGIN == 1 ?
-                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: facebookButton) : Container(),
-
-                                  // Google Button
-                                  GOOGLE_LOGIN == 1 ?
-                                  Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0), child: googleButton) : Container(),
-
-                                ],
+                              new VodTextField(
+                                activeColor: primaryColor,
+                                inActiveColor: hintColor,
+                                label: "Password",
+                                hintText: "Enter your password",
+                                obscureText: true,
+                                suffixIcon: Icon(Icons.visibility),
+                                obscureToggle: true,
+                                obscureIcon: Icon(Icons.visibility_off),
+                                editingController: passwordController,
                               ),
-                            ),
-                            clipper: TopCircleClipper(),
+
+                              //Forgot password text
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 16.0, bottom: 8.0),
+                                  child: forgotPassword),
+
+                              // Login Button
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                  child: loginButton),
+
+                              // New User Signup Text
+                              Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                  child: signupView),
+
+                              // Facebook Button
+                              FACEBOOK_LOGIN == 1
+                                  ? Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
+                                      child: facebookButton)
+                                  : Container(),
+
+                              // Google Button
+                              GOOGLE_LOGIN == 1
+                                  ? Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
+                                      child: googleButton)
+                                  : Container(),
+                            ],
                           ),
                         ),
                         Padding(
@@ -212,7 +211,9 @@ class _LoginState extends State<Login> implements LoginListener {
                               width: 108.0,
                               height: 108.0,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle, color: Colors.black, backgroundBlendMode: BlendMode.overlay),
+                                  shape: BoxShape.circle,
+                                  color: Colors.black,
+                                  backgroundBlendMode: BlendMode.overlay),
                               child: Center(
                                 child: Image.asset("assets/images/logo.png",
                                     width: 90.0, height: 90.0),
@@ -241,8 +242,7 @@ class _LoginState extends State<Login> implements LoginListener {
     if (IMAGE_BACKGROUND) {
       return BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/background.jpg"),
-              fit: BoxFit.cover));
+              image: AssetImage("assets/images/back.png"), fit: BoxFit.cover));
     } else {
       return BoxDecoration(color: primaryColor);
     }

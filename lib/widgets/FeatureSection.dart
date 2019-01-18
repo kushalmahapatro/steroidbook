@@ -49,9 +49,10 @@ class _FeatureSectionState extends State<FeatureSection> {
     // TODO: implement build
     return Column(children: <Widget>[
       Padding(
-        padding: new EdgeInsets.fromLTRB(7, 7, 4, 7),
+        padding: new EdgeInsets.fromLTRB(7, 7, 0, 7),
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               widget.section.title,
@@ -60,6 +61,8 @@ class _FeatureSectionState extends State<FeatureSection> {
             ),
             int.parse(widget.section.total) > SECTION_CONTENT_LIMIT
                 ? VodButton(
+                    isCiruclar: false,
+                    width: 100.0,
                     label: widget.buttonText,
                     textColor: widget.buttonTextColor,
                     buttonColor: widget.buttonBgColor,
@@ -67,6 +70,7 @@ class _FeatureSectionState extends State<FeatureSection> {
                     radious: 4.0,
                   )
                 : VodButton(
+                    isCiruclar: false,
                     label: "",
                     textColor: Colors.transparent,
                     buttonColor: Colors.transparent,

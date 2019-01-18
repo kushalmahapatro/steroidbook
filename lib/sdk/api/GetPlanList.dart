@@ -7,8 +7,8 @@ Future<GetPlanListModel> getPlanListApi(Map<String, String> parameters) async {
   }
   catch(e) {
     print(e);
+    return null;
   }
-  return null;
 }
 
 class GetPlanListModel {

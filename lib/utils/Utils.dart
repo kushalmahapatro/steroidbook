@@ -1,10 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:vod/utils/ColorSwatch.dart';
 export 'PreferenceManager.dart';
 
 class Utils {
   static void snackBar(String message, BuildContext _scaffoldContext) {
     Scaffold.of(_scaffoldContext)
         .showSnackBar(new SnackBar(content: new Text(message)));
+  }
+
+  static void displaySnackBar(GlobalKey<ScaffoldState> scaffoldKey, String message, BuildContext context) async {
+    await Future.delayed(Duration(milliseconds: 400));
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: new Text(message),
+    ));
+  }
+
+  static Icon searchIcon = new Icon(
+    Icons.search,
+    color: Colors.white,
+  );
+  static Icon notificationIcon = new Icon(
+    Icons.notifications,
+    color: Colors.white,
+  );
+
+  static Widget buildBar(BuildContext context, String appBarTitle,
+      List<Icon> iconButtons, List<Function> onClickListeners) {
+    return new AppBar(
+      centerTitle: false,
+      iconTheme: IconThemeData(color: Colors.white),
+      title: Text(
+        "Sapphire",
+        style: new TextStyle(color: Colors.white),
+      ),
+      brightness: Brightness.dark,
+      backgroundColor: primaryColor,
+      actions: getActions(iconButtons, onClickListeners),
+    );
+  }
+
+  static List<Widget> getActions(
+      List<Icon> iconButtons, List<Function> onClickListeners) {
+    List<Widget> widget = new List<Widget>();
+    for (int i = 0; i < iconButtons.length; i++) {
+      widget.add(IconButton(
+        icon: iconButtons[i],
+        onPressed: onClickListeners[i],
+      ));
+    }
+    return widget;
   }
 
 // The check whether the email id is valid or not
@@ -16,4 +60,5 @@ class Utils {
 
     return regExp.hasMatch(email2);
   }
+
 }

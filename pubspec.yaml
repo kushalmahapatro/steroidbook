@@ -21,6 +21,11 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: ^0.11.3+17
   shared_preferences: ^0.4.3
+  video_player: ^0.7.2
+  rxdart: ^0.18.0
+  shimmer: 1.0.0
+  connectivity: 0.3.2
+  flare_flutter:
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +45,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/flares/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

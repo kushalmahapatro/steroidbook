@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:vod/sdk/Api.dart';
 import 'package:vod/utils/Utils.dart';
 
-class SplashScreenController {
+class SplashScreenController  {
   final SplashScreenListener listener;
   final PreferenceManager preferenceManager;
 
@@ -10,13 +10,22 @@ class SplashScreenController {
       : preferenceManager = PreferenceManager();
 
   void callApi() async {
-    IpAddressModel ip = await ipAddressApi();
-    CheckGeoBlockModel geoBlockModel = await checkGeoBlockApi({"authToken": AUTH_TOKEN, "ip": ip.ipAddress});
-    await preferenceManager.setCountryCodePrefs(geoBlockModel.country);
-    GetPlanListModel planListModel = await getPlanListApi({"authToken": AUTH_TOKEN, "country": await preferenceManager.getCountryCodePrefs()});
+    try {
+      IpAddressModel ip = await ipAddressApi();
+      CheckGeoBlockModel geoBlockModel = await checkGeoBlockApi(
+          {"authToken": AUTH_TOKEN, "ip": ip.ipAddress});
+      await preferenceManager.setCountryCodePrefs(geoBlockModel.country);
+      GetPlanListModel planListModel = await getPlanListApi({
+        "authToken": AUTH_TOKEN,
+        "country": await preferenceManager.getCountryCodePrefs()
+      });
 //    await new Future.delayed(const Duration(milliseconds: 1200));
-    listener.routeTo(route: Routes.LOGIN);
+      listener.routeTo(route: Routes.LOGIN);
+    }catch (e){
+      listener.onApiFailure(failure: Failures.NO_INTERNET);
+    }
   }
+
 }
 
 abstract class SplashScreenListener {
@@ -28,3 +37,5 @@ abstract class SplashScreenListener {
 enum Failures { NO_INTERNET, UNKNOWN }
 
 enum Routes { LOGIN, HOME, MY_DOWNLOADS }
+
+

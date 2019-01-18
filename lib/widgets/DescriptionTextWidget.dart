@@ -49,21 +49,21 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                   clicked ? (firstHalf + "...") : (firstHalf + secondHalf),
                   style: widget.textStyle,
                 ),
-                new InkWell(
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      new Text(
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    new InkWell(
+                      child: new Text(
                         clicked ? "more" : "less",
                         style: TextStyle(color: primaryColor, fontSize: 13.0),
                       ),
-                    ],
-                  ),
-                  onTap: () {
-                    setState(() {
-                      clicked = !clicked;
-                    });
-                  },
+                      onTap: () {
+                        setState(() {
+                          clicked = !clicked;
+                        });
+                      },
+                    )
+                  ],
                 ),
               ],
             ),

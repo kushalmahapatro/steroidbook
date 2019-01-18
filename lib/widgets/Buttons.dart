@@ -8,16 +8,19 @@ class VodButton extends StatefulWidget {
   final String label;
   final String imageAsset;
   final Function onClicked;
-  final double height, radious;
+  final double height, radious, width;
+  final bool isCiruclar;
 
   VodButton({
     this.buttonColor = primaryColor,
     this.textColor = Colors.white,
-    this.label = "Button",
+    this.label,
     this.imageAsset,
-    this.onClicked,
+    @required this.onClicked,
     this.height,
+    this.width,
     this.radious,
+    this.isCiruclar = false,
   });
 
   @override
@@ -36,24 +39,40 @@ class _VodButtonState extends State<VodButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: widget.height != null ? widget.height : 35.0,
-        child: RaisedButton(
+    Widget button;
+    widget.isCiruclar
+        ? button = Container(
+            width: widget.width,
+            height: widget.height,
+            child: FlatButton(
+                color: widget.buttonColor,
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(
+                        widget.radious != null ? widget.radious : 00.0)),
+                child: widget.label == null
+                    ? image()
+                    : widget.imageAsset == null ? text() : imageAndText(),
+                onPressed: widget.onClicked))
+        : button = FlatButton(
             color: widget.buttonColor,
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(widget.radious != null ? widget.radious : 00.0)),
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(
+                    widget.radious != null ? widget.radious : 00.0)),
             child: widget.label == null
                 ? image()
                 : widget.imageAsset == null ? text() : imageAndText(),
-            onPressed: widget.onClicked),
-        );
+            onPressed: widget.onClicked);
+    return button;
   }
 
   Widget image() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 10.0, 5.0, 10.0),
+        padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 16.0),
         child: Image.asset(
           widget.imageAsset,
           fit: BoxFit.fitHeight,
+          height: widget.height,
+          width: widget.width,
         ));
   }
 
