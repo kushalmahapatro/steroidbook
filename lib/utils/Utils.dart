@@ -23,6 +23,10 @@ class Utils {
     Icons.notifications,
     color: Colors.white,
   );
+  static Icon filterIcon = new Icon(
+    Icons.filter_list,
+    color: Colors.white,
+  );
 
   static Widget buildBar(BuildContext context, String appBarTitle,
       List<Icon> iconButtons, List<Function> onClickListeners) {
@@ -30,12 +34,12 @@ class Utils {
       centerTitle: false,
       iconTheme: IconThemeData(color: Colors.white),
       title: Text(
-        "Sapphire",
+        appBarTitle,
         style: new TextStyle(color: Colors.white),
       ),
       brightness: Brightness.dark,
       backgroundColor: primaryColor,
-      actions: getActions(iconButtons, onClickListeners),
+      actions: iconButtons != null ?getActions(iconButtons, onClickListeners) : null,
     );
   }
 

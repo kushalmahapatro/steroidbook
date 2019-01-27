@@ -10,6 +10,8 @@ const String _IS_REGISTRATION_ENABLED_ENDPOINT = "isRegistrationEnabled";
 const String _TEXT_TRANSLATION_ENDPOINT = "textTranslation";
 const String _GET_PROFILE_DETAILS_ENDPOINT = "getProfileDetails";
 const String _GET_APP_HOME_FEATURE = "GetAppHomeFeature";
+const String _GET_CONTENT_LIST = "getContentList";
+const String _GET_APP_MENU = "getAppMenu";
 const String _LOGIN = "login";
 
 String ipAddressUrl() {
@@ -43,6 +45,15 @@ String getProfileDetailsUrl() {
 String getAppHomeFeature() {
   return _BASE_URL + _GET_APP_HOME_FEATURE;
 }
+
+String getAppMenu() {
+  return _BASE_URL + _GET_APP_MENU;
+}
+
+String getContentList() {
+  return _BASE_URL + _GET_CONTENT_LIST;
+}
+
 String login() {
   return _BASE_URL + _LOGIN;
 }

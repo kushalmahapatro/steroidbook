@@ -14,14 +14,14 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     if(Platform.isIOS) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.black.withOpacity(0.2),
+        statusBarColor: primaryColor,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness
             .dark, //or set color with: Color(0xFF0000FF)
       ));
     }else{
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.black.withOpacity(0.2),
+        statusBarColor: primaryColor,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness
             .light, //or set color with: Color(0xFF0000FF)

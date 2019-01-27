@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vod/screens/MovieDetailsPage.dart';
+import 'package:vod/screens/sapphire/MovieDetailsPage.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/widgets/video_player.dart';

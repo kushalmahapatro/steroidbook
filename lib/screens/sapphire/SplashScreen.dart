@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:connectivity/connectivity.dart';
 import 'package:meta/meta.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:vod/screens/HomePage.dart';
 import 'package:vod/screens/NoInternet.dart';
@@ -39,6 +38,14 @@ class _SplashScreenState extends State<SplashScreen>
         });
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    if(Platform.isIOS)
+      controller.callApi();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +70,6 @@ class _SplashScreenState extends State<SplashScreen>
         return NoInternet();
       }
     }else{
-      controller.callApi();
       return Scaffold(
           primary: false,
           body: new Container(

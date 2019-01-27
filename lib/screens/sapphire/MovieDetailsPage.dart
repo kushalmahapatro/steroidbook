@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:vod/screens/HomePage.dart';
 import 'package:vod/screens/PlayerPage.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
+import 'package:vod/sdk/api/GetContentList.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/utils/MyBehaviour.dart';
 import 'package:vod/utils/Utils.dart';
@@ -15,10 +16,8 @@ class MovieDetailsPage extends StatefulWidget {
   @override
   _MovieDetailsPageState createState() => _MovieDetailsPageState();
   final HomeFeaturePageSectionDetailsModel contentDetails;
-  final int heroIndex;
-
-  MovieDetailsPage({Key key, @required this.contentDetails, this.heroIndex})
-      : super(key: key);
+  final MovieList movieDetails;
+  MovieDetailsPage({Key key, @required this.contentDetails,  @required this.movieDetails}) : super(key: key);
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
@@ -45,16 +44,29 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     int totalEpisode = 15;
 
     bool multiPart = false;
-    if (widget.contentDetails.contentTypesId == "3") {
-      multiPart = true;
-    } else if (widget.contentDetails.contentTypesId == "1" ||
-        widget.contentDetails.contentTypesId == "2" ||
-        widget.contentDetails.contentTypesId == "4") {
-      multiPart = false;
+    String story;
+    if(widget.contentDetails != null) {
+      if (widget.contentDetails.contentTypesId == "3") {
+        multiPart = true;
+      } else if (widget.contentDetails.contentTypesId == "1" ||
+          widget.contentDetails.contentTypesId == "2" ||
+          widget.contentDetails.contentTypesId == "4") {
+        multiPart = false;
+      }
+      story =
+      "A short story is a piece of prose fiction that typically can be read in one sitting and focuses on a self-contained incident or series of linked incidents, with the intent of evoking a single effect or mood, however there are many exceptions to this.";
+    }else if(widget.movieDetails != null){
+      if (widget.movieDetails.contentTypesId == "3") {
+        multiPart = true;
+      } else if (widget.movieDetails.contentTypesId == "1" ||
+          widget.movieDetails.contentTypesId == "2" ||
+          widget.movieDetails.contentTypesId == "4") {
+        multiPart = false;
+      }
+      story = widget.movieDetails.story;
     }
 
-    String story =
-        "A short story is a piece of prose fiction that typically can be read in one sitting and focuses on a self-contained incident or series of linked incidents, with the intent of evoking a single effect or mood, however there are many exceptions to this.";
+
 
     var season = <String>[
       'Season 1',
@@ -62,15 +74,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       'Season 3',
     ];
     Widget backgroundWidget() {
-      return Hero(
-          tag: widget.contentDetails.permalink + "-$widget.heroIndex",
-          child: Container(
+      return  Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(
-                        this.widget.contentDetails.posterUrl.toString().trim()),
+                    image: NetworkImage( widget.contentDetails != null ?
+                        this.widget.contentDetails.posterUrl.toString().trim()
+                    :
+                    this.widget.movieDetails.posterUrl.toString().trim()),
                     fit: BoxFit.cover)),
-          ));
+          );
     }
 
     Widget gradient() {
@@ -96,7 +108,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               child: InkWell(
         child: Icon(Icons.play_circle_outline, color: primaryColor, size: 60.0),
         onTap: () {
-          Navigator.pushReplacement(
+          Navigator.push(
               context,
               new MaterialPageRoute(
                   builder: (c) => new Player(
@@ -160,8 +172,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       children: <Widget>[
                         Padding(
                             padding: EdgeInsets.only(top: 3.0),
-                            child: Text(
-                              widget.contentDetails.name,
+                            child: Text( widget.contentDetails != null ?
+                              widget.contentDetails.name : widget.movieDetails.name,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: new TextStyle(

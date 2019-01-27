@@ -20,6 +20,8 @@ class SplashScreenController  {
         "country": await preferenceManager.getCountryCodePrefs()
       });
 //    await new Future.delayed(const Duration(milliseconds: 1200));
+      await preferenceManager.getUserLogInStatus() ?
+      listener.routeTo(route: Routes.HOME) :
       listener.routeTo(route: Routes.LOGIN);
     }catch (e){
       listener.onApiFailure(failure: Failures.NO_INTERNET);

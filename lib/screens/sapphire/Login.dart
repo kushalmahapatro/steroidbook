@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vod/bloc/bloc_login.dart';
+import 'package:vod/screens/HomePage.dart';
 import 'package:vod/screens/NavigationDrawer/Drawer.dart';
 import 'package:vod/screens/sapphire/Register.dart';
 import 'package:vod/utils/ColorSwatch.dart';
@@ -43,7 +44,7 @@ class _LoginState extends State<Login> {
               return Navigator(
                 onGenerateRoute: (RouteSettings settings) {
                   return new MaterialPageRoute(
-                      builder: (c) => new NavigationDrawer());
+                      builder: (c) => new HomePage());
                 },
                 onUnknownRoute: (RouteSettings settings) {
                   throw Exception('unknown route');

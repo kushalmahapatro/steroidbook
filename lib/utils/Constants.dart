@@ -44,3 +44,7 @@ const double HR_HEIGHT_EPISODE = 78.75;
 // feature Section Vertical Card width and Height
 const double VR_WIDTH = 105.0;
 const double VR_HEIGHT = 150.0;
+
+// feature Section Vertical Card width and Height for Content Listing
+const double VR_WIDTH_CONTENT = 135.0;
+const double VR_HEIGHT_CONTENT = 190.0;

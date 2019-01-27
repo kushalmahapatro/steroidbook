@@ -4,7 +4,7 @@ import 'package:vod/utils/Constants.dart';
 
 class FeatureContent extends StatefulWidget {
   final ImageProvider image;
-  final String title, heroTag;
+  final String title;
   final Color titleColor;
   final Color gradientEndColor;
   final int textLine;
@@ -21,8 +21,7 @@ class FeatureContent extends StatefulWidget {
       this.onClicked,
       this.isVertical,
       this.isEpisode = false,
-      this.cardRadius = RADIOUS_CARD,
-      this.heroTag});
+      this.cardRadius = RADIOUS_CARD,});
 
   @override
   _FeatureContentState createState() => _FeatureContentState();
@@ -32,7 +31,7 @@ class _FeatureContentState extends State<FeatureContent> {
   String _title;
   Color _titleColor, _gradientEndColor = Colors.transparent;
   int _textLine;
-  var _loadImage = new AssetImage('assets/images/logo.png');
+  var _loadImage = new AssetImage('assets/images/sapphire_logo.png');
   bool _checkLoaded = true, _isVertial = false;
   Function _onClicked = () {};
 
@@ -61,9 +60,7 @@ class _FeatureContentState extends State<FeatureContent> {
     // TODO: implement build
     return InkWell(
       onTap: widget.onClicked,
-      child: Hero(
-          tag: widget.heroTag,
-          child: Container(
+      child:  Container(
             width: widget.isVertical
                 ? VR_WIDTH
                 : widget.isEpisode ? HR_WIDTH_EPISODE : HR_WIDTH,
@@ -113,7 +110,7 @@ class _FeatureContentState extends State<FeatureContent> {
                 )
               ],
             ),
-          )),
+      ),
     );
   }
 }

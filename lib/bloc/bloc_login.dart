@@ -12,8 +12,10 @@ class BlocLogin extends Object {
   //Extended Object cause we can't add Mixing without inheritance
   final _email = BehaviorSubject<LoginData>(); //Email StreamController
   final _password = BehaviorSubject<LoginData>(); //Password StreamController
-  final _loginClick = BehaviorSubject<bool>(); //Password StreamController
-  final _loginApi = BehaviorSubject<LoginData>(); //Password StreamController
+  final _loginClick =
+      BehaviorSubject<bool>(); //Login button click StreamController
+  final _loginApi =
+      BehaviorSubject<LoginData>(); //Log in API called StreamController
 
   Stream<LoginData> get email => _email.stream;
 
@@ -31,7 +33,7 @@ class BlocLogin extends Object {
 
   get loginApiValue => _loginApi.sink.add;
 
-  dispose()  async {
+  dispose() async {
     await _email.drain();
     _email.close();
 
@@ -65,15 +67,7 @@ class BlocLogin extends Object {
       _loginClick.add(false);
     } else {
       if (Utils.isValidMail(email)) {
-        if (password.length >= 6) {
-          apiCall(email, password);
-        } else {
-          data =
-              LoginData(true, "The password should be minimum 6 digits", null);
-          _password.add(data);
-          _email.add(LoginData(true, null, null));
-          _loginClick.add(false);
-        }
+        apiCall(email, password);
       } else {
         data = LoginData(true, "Please enter valid email address", null);
         _email.add(data);
@@ -99,6 +93,7 @@ class BlocLogin extends Object {
       });
 
       if (loginUser.code == 200) {
+        saveOutputData(loginUser);
         data = LoginData(true, loginUser.msg, loginUser);
         _loginApi.add(data);
         _email.add(LoginData(true, null, null));
@@ -118,6 +113,12 @@ class BlocLogin extends Object {
       _password.add(LoginData(true, null, null));
       _loginClick.add(false);
     }
+  }
+
+  saveOutputData(LoginModel loginUser) {
+    preferenceManager.setuserLoggedIn(true);
+    preferenceManager.setUserId(loginUser.id);
+    preferenceManager.setUserName(loginUser.display_name);
   }
 }
 

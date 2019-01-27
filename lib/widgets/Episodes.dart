@@ -68,7 +68,6 @@ class _VodEpisodesState extends State<VodEpisodes> {
           isEpisode: true,
           image: widget.image,
           isVertical: widget.isVertical,
-          heroTag: widget.seasonName+"-$widget.episodeName",
         ),
         logoWidget(),
       ],

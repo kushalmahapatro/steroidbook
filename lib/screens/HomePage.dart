@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:vod/controllers/HomePageControllers.dart';
+import 'package:vod/screens/NavigationDrawer/Drawer.dart';
+import 'package:vod/screens/NavigationDrawer/NavigationMenuDrawer.dart';
+import 'package:vod/screens/Shimmer/HomePageShimmer.dart';
 import 'package:vod/screens/sapphire/MovieDetailsPage.dart';
 import 'package:vod/sdk/api/GetAppHomeFeature.dart';
+import 'package:vod/sdk/api/GetAppMenu.dart';
 import 'package:vod/utils/ColorSwatch.dart';
 import 'package:vod/utils/Constants.dart';
 import 'package:vod/utils/MyBehaviour.dart';
@@ -23,6 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> implements HomePageListener {
   HomePageController controller;
+  bool apiFetched = false;
 
   _HomePageState() {
     controller = HomePageController(listener: this);
@@ -30,7 +35,7 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
   }
 
   GetAppHomeFeatureModel homePageData;
-  bool apiFetched = false;
+  GetAppMenuModel drawerPageData;
 
   Scaffold scaffold;
   BuildContext _context;
@@ -53,19 +58,23 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
     }
 
     Future<ui.Image> _getImage(String url) {
-      Completer<ui.Image> completer = new Completer<ui.Image>();
-      new NetworkImage(url).resolve(new ImageConfiguration()).addListener(
-          (ImageInfo info, bool _) => completer.complete(info.image));
-      return completer.future;
+      try {
+        Completer<ui.Image> completer = new Completer<ui.Image>();
+        new NetworkImage(url).resolve(new ImageConfiguration()).addListener(
+                (ImageInfo info, bool _) => completer.complete(info.image));
+        return completer.future;
+      }catch(e){
+        return null;
+      }
     }
 
     horizontalList(bool isVertical, HomeFeaturePageSectionModel section) {
       return Container(
         child: new ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: int.parse(section.total) >= SECTION_CONTENT_LIMIT
+            itemCount: section.data.length >= SECTION_CONTENT_LIMIT
                 ? SECTION_CONTENT_LIMIT
-                : int.parse(section.total),
+                : section.data.length,
             itemBuilder: (BuildContext ctxt, int index) {
               return Padding(
                   padding: EdgeInsets.only(left: 5.0, right: 5.0),
@@ -77,13 +86,11 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
                   .toString()
                   .trim(),*/
                       isVertical: isVertical,
-                      heroTag: section.data[index].permalink + "-$index",
                       onClicked: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext c) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (BuildContext c) {
                           return MovieDetailsPage(
                             contentDetails: section.data[index],
-                            heroIndex: index,
                           );
                         }));
                       }));
@@ -92,45 +99,9 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
       );
     }
 
-    Widget shimmerSection = new Padding(
-      padding: EdgeInsets.only(left: 10.0, top: 20.0),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(padding: EdgeInsets.only(bottom: 10.0), child:
-              Container(
-                color: Colors.grey,
-                width: 100.0,
-                height: 20.0,
-              ))
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(padding: EdgeInsets.only(right: 10.0),
-              child: Container(
-                width: HR_WIDTH,
-                height: HR_HEIGHT,
-                color: Colors.grey,
-              ),),
-              Padding(padding: EdgeInsets.only(right: 10.0),
-                child: Container(
-                  width: HR_WIDTH,
-                  height: HR_HEIGHT,
-                  color: Colors.grey,
-                ),)
-            ],
-          )
-        ],
-      ),
-    );
-
-    Widget body = apiFetched
-        ? new Container(
+    Widget body =
+      apiFetched ?
+        new Container(
             child: ScrollConfiguration(
             behavior: MyBehavior(),
             child: ListView.builder(
@@ -158,7 +129,7 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
                     );
                   } else {
                     if (homePageData.sectionName[index - 2].sectionType ==
-                        "0") {
+                        "0" && homePageData.sectionName[index - 2].data.length > 0) {
                       return new Container(
                         child: new FutureBuilder<ui.Image>(
                           future: _getImage(homePageData
@@ -166,39 +137,27 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
                           builder: (BuildContext context,
                               AsyncSnapshot<ui.Image> snapshot) {
                             if (snapshot.hasData) {
+                              bool vertical;
                               if (snapshot.data.width > snapshot.data.height) {
-                                return new FeatureSection(
-                                  section: homePageData.sectionName[index - 2],
-                                  isVertical: false,
-                                  buttonBgColor: Colors.transparent,
-                                  buttonText: "More >",
-                                  buttonTextColor: primaryColor,
-                                  onButtonPress: () {
-                                    Utils.snackBar(
-                                        homePageData
-                                            .sectionName[index - 2].sectionId,
-                                        _context);
-                                  },
-                                  child: horizontalList(false,
-                                      homePageData.sectionName[index - 2]),
-                                );
+                                vertical = false;
                               } else {
-                                return new FeatureSection(
-                                  section: homePageData.sectionName[index - 2],
-                                  isVertical: true,
-                                  buttonBgColor: Colors.transparent,
-                                  buttonText: "More>",
-                                  buttonTextColor: primaryColor,
-                                  onButtonPress: () {
-                                    Utils.snackBar(
-                                        homePageData
-                                            .sectionName[index - 2].sectionId,
-                                        _context);
-                                  },
-                                  child: horizontalList(true,
-                                      homePageData.sectionName[index - 2]),
-                                );
+                                vertical = true;
                               }
+                              return new FeatureSection(
+                                section: homePageData.sectionName[index - 2],
+                                isVertical: vertical,
+                                buttonBgColor: Colors.transparent,
+                                buttonText: "More >",
+                                buttonTextColor: primaryColor,
+                                onButtonPress: () {
+                                  Utils.snackBar(
+                                      homePageData
+                                          .sectionName[index - 2].sectionId,
+                                      _context);
+                                },
+                                child: horizontalList(vertical,
+                                    homePageData.sectionName[index - 2]),
+                              );
                             } else {
                               return new Container();
                             }
@@ -210,37 +169,30 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
                     }
                   }
                 }),
-          ))
-        : Container(
-            child: Center(
-            child:
-                /*ColorLoaderPlain(
-              colors: loaderColors,
-              duration: Duration(milliseconds: 1200),
-            )*/
-                Shimmer.fromColors(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          width: double.infinity,
-                          height: 900 / (1600 / screenWidth),
-                          color: Colors.grey,
-                        ),
-                        shimmerSection,
-                        shimmerSection,
-                      ],
-                    ),
-                    baseColor: Colors.grey.withOpacity(0.5),
-                    highlightColor: Colors.grey.withOpacity(0.7)),
-          ));
+          )):
+          HomePageShimmer()
+       ;
+
+    List<Icon> icons = new List<Icon>();
+    icons.add(Utils.searchIcon);
+    icons.add(Utils.notificationIcon);
+
+    List<Function> click = new List<Function>();
+    click.add(() {
+      Utils.snackBar("Search", _context);
+    });
+    click.add(() {
+      Utils.snackBar("Notification", _context);
+    });
 
     scaffold = new Scaffold(
+        appBar: Utils.buildBar(context, "Sapphire", icons, click),
         backgroundColor: Colors.black,
+        drawer: apiFetched ? NavigationMenuDrawer(drawerPageData: drawerPageData,) : null,
         body: Builder(builder: (BuildContext _buildContext) {
           _context = _buildContext;
           return body;
         }));
-
     return scaffold;
   }
 
@@ -250,10 +202,10 @@ class _HomePageState extends State<HomePage> implements HomePageListener {
   }
 
   @override
-  void onApiSuccess({GetAppHomeFeatureModel data}) {
-    // TODO: implement onApiSuccess
+  void onApiSuccess({GetAppHomeFeatureModel homeData, GetAppMenuModel drawerData}) {
     setState(() {
-      homePageData = data;
+      homePageData = homeData;
+      drawerPageData = drawerData;
       apiFetched = true;
     });
   }
