@@ -4,5 +4,6 @@ export 'package:widgetbook/src/devices/widgetbook_device_frame.dart';
 export 'package:widgetbook/src/knobs/knobs.dart';
 export 'package:widgetbook/src/navigation/navigation.dart';
 export 'package:widgetbook/src/theming/widgetbook_theme.dart';
+export 'package:widgetbook/src/widget_properties/widget_properties.dart';
 export 'package:widgetbook/src/widgetbook.dart';
 export 'package:widgetbook_models/widgetbook_models.dart';

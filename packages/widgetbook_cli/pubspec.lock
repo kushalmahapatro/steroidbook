@@ -652,16 +652,18 @@ packages:
   widgetbook_exception:
     dependency: "direct main"
     description:
-      path: "../widgetbook_exception"
-      relative: true
-    source: path
+      name: widgetbook_exception
+      sha256: "55c56e20a8d58fc0754f8a23d5e85eb5178d521502d938d434798271143a505e"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1-beta.3"
   widgetbook_git:
     dependency: "direct main"
     description:
-      path: "../widgetbook_git"
-      relative: true
-    source: path
+      name: widgetbook_git
+      sha256: d54414899ab7484884de45c053f9938586a07143e203ea716a00b249cbcf5f90
+      url: "https://pub.dev"
+    source: hosted
     version: "2.2.0-beta.8"
   yaml:
     dependency: transitive

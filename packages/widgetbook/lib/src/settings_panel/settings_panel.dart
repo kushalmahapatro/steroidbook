@@ -13,6 +13,8 @@ class SettingsPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final addons = context.watch<AddOnProvider>().value;
     final knobs = context.watch<KnobsNotifier>().all();
+    final properties = context.watch<WidgetPropertiesNotifier>().all();
+
     return Card(
       child: Column(
         children: [
@@ -28,6 +30,10 @@ class SettingsPanel extends StatelessWidget {
                     name: 'Knobs',
                     settings: knobs.map((e) => e.build(context)).toList(),
                   ),
+                  core.SettingsPanelData(
+                      name: 'Widget Properties',
+                      settings:
+                          properties.map((e) => e.build(context)).toList()),
                 ],
               ),
             ),

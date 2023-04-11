@@ -552,37 +552,42 @@ packages:
   widgetbook:
     dependency: "direct dev"
     description:
-      path: "../../packages/widgetbook"
-      relative: true
-    source: path
+      name: widgetbook
+      sha256: b39df2d2616299a1ce601273dc6ac9759779cc294a90b6eb41c0cd0160319731
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.0-beta.13"
   widgetbook_annotation:
     dependency: "direct main"
     description:
-      path: "../../packages/widgetbook_annotation"
-      relative: true
-    source: path
+      name: widgetbook_annotation
+      sha256: "39fd647baa963b092423e0bdc976bc61192f2c715633cb0d226fbe663f06ebb4"
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.0-beta.6"
   widgetbook_core:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "../../packages/widgetbook_core"
-      relative: true
-    source: path
+      name: widgetbook_core
+      sha256: "3d1df1881f1ad86385efbc8beb339a6d2bfabf524938188b30b7277eee551cfb"
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.0-beta.7"
   widgetbook_generator:
     dependency: "direct dev"
     description:
-      path: "../../packages/widgetbook_generator"
-      relative: true
-    source: path
+      name: widgetbook_generator
+      sha256: "66853c089cbeaaa13ae88e1ccd06503a01fa54a872e1ff105ec9810485406932"
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.0-beta.10"
   widgetbook_models:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "../../packages/widgetbook_models"
-      relative: true
-    source: path
+      name: widgetbook_models
+      sha256: f3e146fe403c1620532deca01ece616fbdaa6a5ee623efd6196b761ba59b4ac9
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.0-beta.3"
   yaml:
     dependency: transitive

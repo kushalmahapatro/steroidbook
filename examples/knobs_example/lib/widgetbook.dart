@@ -96,6 +96,9 @@ class KnobsExample extends StatelessWidget {
                           'This is the tooltip that is displayed when hovering over the increment button',
                       initialValue: true,
                     ),
+                    onItemHovered: (value) => context.widgetProperties.text(
+                      properties: value,
+                    ),
                   ),
                 ),
               ],

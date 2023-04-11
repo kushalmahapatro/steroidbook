@@ -28,6 +28,7 @@ class MyHomePage extends StatefulWidget {
     this.countLabel,
     this.iconData,
     this.showToolTip = true,
+    this.onItemHovered,
   }) : super(key: key);
 
   final String title;
@@ -35,6 +36,7 @@ class MyHomePage extends StatefulWidget {
   final String? countLabel;
   final IconData? iconData;
   final bool showToolTip;
+  final ValueChanged<String>? onItemHovered;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -53,28 +55,43 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: hover(
+          child: Text(widget.title),
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            hover(
+                child: Text(
               widget.countLabel ??
                   'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            )),
+            hover(
+              child: Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: widget.showToolTip ? 'Increment' : null,
-        child: Icon(widget.iconData ?? Icons.add),
+      floatingActionButton: hover(
+        child: FloatingActionButton(
+          onPressed: _incrementCounter,
+          tooltip: widget.showToolTip ? 'Increment' : null,
+          child: hover(child: Icon(widget.iconData ?? Icons.add)),
+        ),
       ),
+    );
+  }
+
+  Widget hover({required Widget child}) {
+    return MouseRegion(
+      onEnter: (_) => widget.onItemHovered?.call(child.toString()),
+      onExit: (_) => widget.onItemHovered?.call(''),
+      child: child,
     );
   }
 }

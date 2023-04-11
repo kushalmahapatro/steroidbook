@@ -10,6 +10,7 @@ import 'package:widgetbook/src/knobs/knobs.dart';
 import 'package:widgetbook/src/navigation/navigation.dart';
 import 'package:widgetbook/src/navigation/router.dart';
 import 'package:widgetbook/src/repositories/selected_use_case_repository.dart';
+import 'package:widgetbook/src/widget_properties/widget_properties.dart';
 import 'package:widgetbook_core/widgetbook_core.dart';
 import 'package:widgetbook_models/widgetbook_models.dart';
 
@@ -87,10 +88,10 @@ class Widgetbook<CustomTheme> extends StatefulWidget {
 class _WidgetbookState<CustomTheme> extends State<Widgetbook<CustomTheme>> {
   final SelectedUseCaseRepository selectedStoryRepository =
       SelectedUseCaseRepository();
-
   late BuilderProvider builderProvider;
   late UseCasesProvider useCasesProvider;
   late KnobsNotifier knobsNotifier;
+  late WidgetPropertiesNotifier widgetPropertiesNotifier;
   late GoRouter goRouter;
   final NavigationBloc navigationBloc = NavigationBloc();
 
@@ -103,6 +104,8 @@ class _WidgetbookState<CustomTheme> extends State<Widgetbook<CustomTheme>> {
     )..loadFromDirectories(widget.directories);
 
     knobsNotifier = KnobsNotifier(selectedStoryRepository);
+    widgetPropertiesNotifier =
+        WidgetPropertiesNotifier(selectedStoryRepository);
     navigationBloc.add(
       LoadNavigationTree(
         directories: widget.directories,
@@ -134,6 +137,7 @@ class _WidgetbookState<CustomTheme> extends State<Widgetbook<CustomTheme>> {
         ChangeNotifierProvider(
           create: (_) => AddOnProvider(widget.addons),
         ),
+        ChangeNotifierProvider.value(value: widgetPropertiesNotifier),
       ],
       child: BlocProvider.value(
         value: navigationBloc,
