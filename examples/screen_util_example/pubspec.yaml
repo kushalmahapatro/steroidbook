@@ -22,7 +22,7 @@ dev_dependencies:
     sdk: flutter
 
   widgetbook: ^3.0.0-beta.13
-  widgetbook_generator: ^3.0.0-beta.10
+  widgetbook_generator: ^3.0.0-beta.11
   build_runner: ^2.3.3
 
 flutter:
