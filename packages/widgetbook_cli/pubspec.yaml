@@ -31,7 +31,7 @@ dependencies:
   pubspec: ^2.3.0
   test: ^1.12.1
   version: ^3.0.2
-  widgetbook_exception: ^0.0.1-beta.3
+  widgetbook_exception: ^0.0.1-beta.4
   widgetbook_git: ^2.2.0-beta.8
 executables:
   widgetbook: cli_production
