@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knobs_example/circle.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
+            hover(child: const Circle()),
           ],
         ),
       ),
@@ -90,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget hover({required Widget child}) {
     return MouseRegion(
       onEnter: (_) => widget.onItemHovered?.call(child.toString()),
-      onExit: (_) => widget.onItemHovered?.call(''),
       child: child,
     );
   }

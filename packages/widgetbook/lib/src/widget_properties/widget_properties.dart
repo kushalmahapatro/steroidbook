@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:widgetbook/src/repositories/selected_use_case_repository.dart';
 
@@ -92,7 +93,19 @@ class NullableTextProperties extends Properties<String?> {
           color: Colors.grey.withOpacity(0.1),
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(4)),
-      child: Text(property ?? ''),
+      child: Row(
+        children: [
+          Expanded(child: SelectableText(property ?? '')),
+          TextButton(
+            onPressed: () {
+              if (property != null && property!.isNotEmpty) {
+                Clipboard.setData(ClipboardData(text: property ?? ''));
+              }
+            },
+            child: Icon(Icons.copy, size: 20),
+          ),
+        ],
+      ),
     );
   }
 }
