@@ -22,7 +22,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^2.2.0
-  mocktail: ^0.3.0
+  mocktail: ^1.0.0
 
 flutter:
   fonts:
