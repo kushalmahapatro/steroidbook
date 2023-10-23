@@ -24,7 +24,7 @@ dependencies:
   file: ^6.1.2
   freezed_annotation: ^2.0.3
   http_parser: ^4.0.1 
-  mason_logger: ^0.2.5
+  mason_logger: ^0.2.8
   meta: ^1.8.0
   path: ^1.8.2
   pub_updater: ^0.2.2 
