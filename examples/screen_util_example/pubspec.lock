@@ -561,10 +561,10 @@ packages:
     dependency: "direct main"
     description:
       name: widgetbook_annotation
-      sha256: "39fd647baa963b092423e0bdc976bc61192f2c715633cb0d226fbe663f06ebb4"
+      sha256: c2d881d0241525b36aa3777d0ac406d198528ed28b84ca73b7dd9f59189d6bb0
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0-beta.6"
+    version: "3.1.0"
   widgetbook_core:
     dependency: transitive
     description:
